@@ -88,3 +88,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 build
+.cache
