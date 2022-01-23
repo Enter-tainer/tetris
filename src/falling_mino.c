@@ -257,3 +257,64 @@ void get_cells(struct FallingMino* current, int* x_array, int* y_array) {
   }
   }
 }
+
+void rotate_falling_mino_clockwise(struct FallingMino* current, int test_cnt) {
+  static int test_shifts_none_I[4][5][2] = {
+      {{0, 0}, {-1, 0}, {-1, +1}, {0, -2}, {-1, -2}},
+      {{0, 0}, {+1, 0}, {+1, -1}, {0, +2}, {+1, +2}},
+      {{0, 0}, {+1, 0}, {+1, +1}, {0, -2}, {+1, -2}},
+      {{0, 0}, {-1, 0}, {-1, -1}, {0, +2}, {-1, +2}},
+  };
+
+  static int test_shifts_I[4][5][2] = {
+      {{0, 0}, {-2, 0}, {+1, 0}, {-2, -1}, {+1, +2}},
+      {{0, 0}, {-1, 0}, {+2, 0}, {-1, +2}, {+2, -1}},
+      {{0, 0}, {+2, 0}, {-1, 0}, {+2, +1}, {-1, -2}},
+      {{0, 0}, {+1, 0}, {-2, 0}, {+1, -2}, {-2, +1}},
+  };
+
+  int state_before_rotate = current->state; // use it to index test array
+  current->state          = rotate_state_clockwise(current->state);
+  if (current->type == IMino) {
+    int x = test_shifts_I[state_before_rotate][test_cnt][0];
+    int y = test_shifts_I[state_before_rotate][test_cnt][1];
+    current->x += x;
+    current->y += y;
+  } else {
+    int x = test_shifts_none_I[state_before_rotate][test_cnt][0];
+    int y = test_shifts_none_I[state_before_rotate][test_cnt][1];
+    current->x += x;
+    current->y += y;
+  }
+}
+
+void rotate_falling_mino_counter_clockwise(struct FallingMino* current,
+                                           int test_cnt) {
+  static int test_shifts_none_I[4][5][2] = {
+      {{0, 0}, {+1, 0}, {+1, +1}, {0, -2}, {+1, -2}},
+      {{0, 0}, {-1, 0}, {-1, -1}, {0, +2}, {-1, +2}},
+      {{0, 0}, {-1, 0}, {-1, +1}, {0, -2}, {-1, -2}},
+      {{0, 0}, {+1, 0}, {+1, -1}, {0, +2}, {+1, +2}},
+  };
+
+  static int test_shifts_I[4][5][2] = {
+      {{0, 0}, {-1, 0}, {+2, 0}, {-1, +2}, {+2, -1}},
+      {{0, 0}, {-2, 0}, {+1, 0}, {-2, -1}, {+1, +2}},
+      {{0, 0}, {+1, 0}, {-2, 0}, {+1, -2}, {-2, +1}},
+      {{0, 0}, {+2, 0}, {-1, 0}, {+2, +1}, {-1, -2}},
+  };
+
+  int state_before_rotate = current->state; // use it to index test array
+  current->state          = rotate_state_clockwise(current->state);
+  if (current->type == IMino) {
+    int x = test_shifts_I[state_before_rotate][test_cnt][0];
+    int y = test_shifts_I[state_before_rotate][test_cnt][1];
+    current->x += x;
+    current->y += y;
+  } else {
+    int x = test_shifts_none_I[state_before_rotate][test_cnt][0];
+    int y = test_shifts_none_I[state_before_rotate][test_cnt][1];
+    current->x += x;
+    current->y += y;
+  }
+}
