@@ -73,6 +73,8 @@ struct Field {
    */
 };
 
+void init_field(struct Field* f);
+
 // compute the ghost piece, and set it to f->ghost
 void set_ghost_piece(struct Field* f);
 
@@ -100,7 +102,7 @@ bool rotate_clockwise(struct Field* f);
 // return false if rotate failed
 bool rotate_counter_clockwise(struct Field* f);
 
-// spawn a new mino, with optional type argument
+// spawn a new mino in field, set current, with optional type argument
 // if type if specified, next queue will remain untouched
 // return false if new mino cannot be spawned, i.e. failed
 bool spawn_mino(struct Field* f, struct OptionMinoType type);

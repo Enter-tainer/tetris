@@ -1,5 +1,18 @@
 #include "tetris.h"
+#include <stdbool.h>
 
+void init_field(struct Field* f) {
+  for (int i = 0; i < 40; ++i) {
+    for (int j = 0; j < 0; ++j) {
+      f->field[i][j] = Clean;
+    }
+  }
+  init_queue(&f->next);
+  f->allow_hold = true;
+  struct OptionMinoType tmp = {.is_some = false};
+  spawn_mino(f, tmp);
+  set_ghost_piece(f);
+}
 void set_ghost_piece(struct Field* f) {
   struct FallingMino current_back = f->current;
   while (drop_step(f))
@@ -163,5 +176,6 @@ int lock_mino(struct Field* f) {
       f->field[i][j] = new_field[i][j];
     }
   }
+  f->allow_hold = true;
   return lines_cleared;
 }
