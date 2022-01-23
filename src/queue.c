@@ -34,6 +34,7 @@ void init_queue(struct MinoQueue* queue) {
 enum MinoType pop_queue(struct MinoQueue* queue) {
   enum MinoType res = queue->data[queue->front];
   queue->front++;
+  queue->front %= 14;
   queue->size--;
   if (queue->size == 7) {
     enum MinoType tmp[7];
