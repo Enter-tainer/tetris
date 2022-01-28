@@ -73,6 +73,9 @@ struct Field {
    */
 };
 
+// get current field, with current and ghost rendered
+void get_field(struct Field* f, enum CellType field[40][10]);
+
 void init_field(struct Field* f);
 
 // compute the ghost piece, and set it to f->ghost

@@ -1,6 +1,21 @@
 #include "tetris.h"
 #include <stdbool.h>
-
+void get_field(struct Field* f , enum CellType field[40][10]) {
+  for (int i = 0; i < 40; ++i) {
+    for (int j = 0; j < 10; ++j) {
+      field[i][j] = f->field[i][j];
+    }
+  }
+  int cell_x[4], cell_y[4];
+  get_cells(&f->ghost, cell_x, cell_y);
+  for (int i = 0; i < 4; ++i) {
+    field[cell_x[i]][cell_y[i]] = Shadow;
+  }
+  get_cells(&f->current, cell_x, cell_y);
+  for (int i = 0; i < 4; ++i) {
+    field[cell_x[i]][cell_y[i]] = Shadow;
+  }
+}
 void init_field(struct Field* f) {
   for (int i = 0; i < 40; ++i) {
     for (int j = 0; j < 0; ++j) {
@@ -53,6 +68,7 @@ bool is_obstructed(struct Field* f, struct FallingMino* piece) {
 bool move_left_step(struct Field* f) {
   struct FallingMino piece = f->current;
   piece.y -= 1;
+  set_ghost_piece(f);
   if (!is_obstructed(f, &piece)) {
     f->current = piece;
     return true;
@@ -62,6 +78,7 @@ bool move_left_step(struct Field* f) {
 bool move_right_step(struct Field* f) {
   struct FallingMino piece = f->current;
   piece.y += 1;
+  set_ghost_piece(f);
   if (!is_obstructed(f, &piece)) {
     f->current = piece;
     return true;
@@ -89,6 +106,7 @@ bool rotate_clockwise(struct Field* f) {
       f->current = current_back;
     }
   }
+  set_ghost_piece(f);
   return test_cnt <= 5;
 }
 
@@ -103,6 +121,7 @@ bool rotate_counter_clockwise(struct Field* f) {
       f->current = current_back;
     }
   }
+  set_ghost_piece(f);
   // if all tests are failed, current will remain untouched
   // otherwise, current has been rotated
   return test_cnt <= 5;
@@ -121,6 +140,7 @@ bool spawn_mino(struct Field* f, struct OptionMinoType type) {
   if (!is_obstructed(f, &next)) {
     // OK
     f->current = next;
+    set_ghost_piece(f);
     if (!type.is_some) {
       // if current mino is not from hold, allow hold
       f->allow_hold = true;
