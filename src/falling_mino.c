@@ -58,8 +58,8 @@ void get_cells(struct FallingMino* current, int* x_array, int* y_array) {
     }
     break;
   case TMino: {
-    int dx[] = {1, 0, 0, -1};
-    int dy[] = {0, 1, -1, 0};
+    int dx[] = {1, 0, -1, 0};
+    int dy[] = {0, 1, 0, -1};
     //            u  r  d   l
     x_array[0] = current->x;
     y_array[0] = current->y;

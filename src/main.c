@@ -4,6 +4,9 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <time.h>
+#ifdef __linux__
+#include <unistd.h>
+#endif
 
 // Size of the stage
 #define STAGE_W 10
@@ -53,24 +56,28 @@ void draw() {
 }
 
 void field_update() {
-    if(key.down) {
-        drop_step(&f);
-    }
-    if (key.left) {
-        move_left_step(&f);
-    }
-    if (key.right) {
-        move_right_step(&f);
-    }
-    if (key.z) {
-        rotate_counter_clockwise(&f);
-    }
-    if (key.x) {
-        rotate_clockwise(&f);
-    }
-    if (key.space) {
-        while (drop_step(&f));
-    }
+  if (key.down) {
+    drop_step(&f);
+  }
+  if (key.left) {
+    move_left_step(&f);
+  }
+  if (key.right) {
+    move_right_step(&f);
+  }
+  if (key.z) {
+    rotate_counter_clockwise(&f);
+  }
+  if (key.x) {
+    rotate_clockwise(&f);
+  }
+  if (key.space) {
+    while (drop_step(&f))
+      ;
+    lock_mino(&f);
+    struct OptionMinoType tmp = {.is_some = false};
+    spawn_mino(&f, tmp); // test failure here to indicate game over
+  }
 }
 #ifdef __linux__
 #define MAIN main
@@ -83,15 +90,14 @@ int MAIN(int argc, char* args[]) {
   graphics_draw_rect(0, 0, SCREEN_W, SCREEN_H);
   graphics_flip();
   init_field(&f);
-//   graphics_set_color(COLOR_BLUE);
-//   graphics_draw_rect(0, 0, 10, 10);
-//   graphics_flip();
-//   while (true) {
-//     printf("fuck");
-//     input_update();
-//     field_update();
-//     draw();
-//   }
-  sleep(2);
+  graphics_set_color(COLOR_BLUE);
+  graphics_draw_rect(0, 0, 10, 10);
+  graphics_flip();
+  while (true) {
+    printf("fuck");
+    input_update();
+    field_update();
+    draw();
+  }
   return 0;
 }

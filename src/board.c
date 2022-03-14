@@ -18,7 +18,7 @@ void get_field(struct Field* f , enum CellType field[40][10]) {
 }
 void init_field(struct Field* f) {
   for (int i = 0; i < 40; ++i) {
-    for (int j = 0; j < 0; ++j) {
+    for (int j = 0; j < 10; ++j) {
       f->field[i][j] = Clean;
     }
   }
@@ -26,7 +26,7 @@ void init_field(struct Field* f) {
   f->allow_hold = true;
   struct OptionMinoType tmp = {.is_some = false};
   spawn_mino(f, tmp);
-  set_ghost_piece(f);
+  // set_ghost_piece(f);
 }
 void set_ghost_piece(struct Field* f) {
   struct FallingMino current_back = f->current;
@@ -58,7 +58,7 @@ bool is_obstructed(struct Field* f, struct FallingMino* piece) {
   int cell_x[4], cell_y[4];
   get_cells(piece, cell_x, cell_y);
   for (int i = 0; i < 4; ++i) {
-    if (is_valid(cell_x[i], cell_y[i]) &&
+    if (!is_valid(cell_x[i], cell_y[i]) ||
         is_occupied(f, cell_x[i], cell_y[i])) {
       return true;
     }
@@ -68,9 +68,9 @@ bool is_obstructed(struct Field* f, struct FallingMino* piece) {
 bool move_left_step(struct Field* f) {
   struct FallingMino piece = f->current;
   piece.y -= 1;
-  set_ghost_piece(f);
   if (!is_obstructed(f, &piece)) {
     f->current = piece;
+    set_ghost_piece(f);
     return true;
   }
   return false;
@@ -78,9 +78,9 @@ bool move_left_step(struct Field* f) {
 bool move_right_step(struct Field* f) {
   struct FallingMino piece = f->current;
   piece.y += 1;
-  set_ghost_piece(f);
   if (!is_obstructed(f, &piece)) {
     f->current = piece;
+    set_ghost_piece(f);
     return true;
   }
   return false;
@@ -173,7 +173,7 @@ int lock_mino(struct Field* f) {
   // clean lines
   enum CellType new_field[40][10];
   for (int i = 0; i < 40; ++i) {
-    for (int j = 0; j < 0; ++j) {
+    for (int j = 0; j < 10; ++j) {
       new_field[i][j] = Clean;
     }
   }
@@ -192,7 +192,7 @@ int lock_mino(struct Field* f) {
     }
   }
   for (int i = 0; i < 40; ++i) {
-    for (int j = 0; j < 0; ++j) {
+    for (int j = 0; j < 10; ++j) {
       f->field[i][j] = new_field[i][j];
     }
   }

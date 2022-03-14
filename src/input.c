@@ -12,10 +12,8 @@ const int K_RETURN = SDL_SCANCODE_RETURN;
 const int K_ESC    = SDL_SCANCODE_ESCAPE;
 
 int input_update() {
-	SDL_Event event;
-	while(SDL_PollEvent(&event)) {
-		if(event.type == SDL_QUIT) return 1;
-	}
+  SDL_Event event;
+	SDL_WaitEvent(&event);
 	oldKey.left = key.left;
 	oldKey.right = key.right;
 	oldKey.up = key.up;
