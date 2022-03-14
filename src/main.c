@@ -72,8 +72,12 @@ void field_update() {
         while (drop_step(&f));
     }
 }
-
-int WinMain(int argc, char* args[]) {
+#ifdef __linux__
+#define MAIN main
+#else
+#define MAIN WinMain
+#endif
+int MAIN(int argc, char* args[]) {
   graphics_init(SCREEN_W, SCREEN_H);
   graphics_set_color(COLOR_BLACK);
   graphics_draw_rect(0, 0, SCREEN_W, SCREEN_H);

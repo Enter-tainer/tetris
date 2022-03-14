@@ -5,7 +5,7 @@
 
 // A couple structs that contain key/mouse button status
 // There is a "current" state and an "old" state (previous frame)
-struct {
+extern struct KeyMap {
 	Uint8 up; Uint8 down; Uint8 left; Uint8 right;
 	Uint8 z; Uint8 x; Uint8 shift; Uint8 space; Uint8 enter; Uint8 esc;
 } key, oldKey;
