@@ -8,4 +8,12 @@ src/queue.c
 src/random.c
 src/random.h
 src/tetris.h
+src/graphics.h
+src/graphics.c
+src/input.c
+src/input.h
+src/board.c
+src/falling_mino.c
 )
+
+TARGET_LINK_LIBRARIES(tetris SDL2 SDL2_ttf)
