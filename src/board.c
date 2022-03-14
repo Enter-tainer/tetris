@@ -96,9 +96,9 @@ bool drop_step(struct Field* f) {
 }
 
 bool rotate_clockwise(struct Field* f) {
-  int test_cnt                    = 1;
+  int test_cnt                    = 0;
   struct FallingMino current_back = f->current;
-  for (; test_cnt <= 5; ++test_cnt) {
+  for (; test_cnt < 5; ++test_cnt) {
     rotate_falling_mino_clockwise(&f->current, test_cnt);
     if (!is_obstructed(f, &f->current)) {
       break;
@@ -111,9 +111,9 @@ bool rotate_clockwise(struct Field* f) {
 }
 
 bool rotate_counter_clockwise(struct Field* f) {
-  int test_cnt                    = 1;
+  int test_cnt                    = 0;
   struct FallingMino current_back = f->current;
-  for (; test_cnt <= 5; ++test_cnt) {
+  for (; test_cnt < 5; ++test_cnt) {
     rotate_falling_mino_counter_clockwise(&f->current, test_cnt);
     if (!is_obstructed(f, &f->current)) {
       break;

@@ -305,7 +305,7 @@ void rotate_falling_mino_counter_clockwise(struct FallingMino* current,
   };
 
   int state_before_rotate = current->state; // use it to index test array
-  current->state          = rotate_state_clockwise(current->state);
+  current->state          = rotate_state_counter_clockwise(current->state);
   if (current->type == IMino) {
     int x = test_shifts_I[state_before_rotate][test_cnt][1];
     int y = test_shifts_I[state_before_rotate][test_cnt][0];
