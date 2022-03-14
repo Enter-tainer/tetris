@@ -21,7 +21,7 @@ static void generate_bag(enum MinoType* b) {
   b[3] = LMino;
   b[4] = JMino;
   b[5] = SMino;
-  b[7] = ZMino;
+  b[6] = ZMino;
   shuffle(b, 7);
 }
 void init_queue(struct MinoQueue* queue) {
