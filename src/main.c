@@ -21,19 +21,19 @@ enum CellType field[40][10];
 int get_color(enum CellType c) {
   switch (c) {
   case IBlock:
-    return COLOR_RED;
-  case TBlock:
-    return COLOR_GREEN;
-  case OBlock:
-    return COLOR_BLUE;
-  case JBlock:
-    return COLOR_YELLOW;
-  case LBlock:
     return COLOR_CYAN;
-  case SBlock:
-    return COLOR_ORANGE;
-  case ZBlock:
+  case TBlock:
     return COLOR_PURPLE;
+  case OBlock:
+    return COLOR_YELLOW;
+  case JBlock:
+    return COLOR_BLUE;
+  case LBlock:
+    return COLOR_ORANGE;
+  case SBlock:
+    return COLOR_GREEN;
+  case ZBlock:
+    return COLOR_RED;
   case Clean:
     return COLOR_BLACK;
   case Shadow:
@@ -72,12 +72,18 @@ void field_update() {
   if (key.x) {
     rotate_clockwise(&f);
   }
+  if (key.c) {
+    hold_mino(&f);
+  }
   if (key.space) {
     while (drop_step(&f))
       ;
     lock_mino(&f);
     struct OptionMinoType tmp = {.is_some = false};
-    spawn_mino(&f, tmp); // test failure here to indicate game over
+    bool res = spawn_mino(&f, tmp); // test failure here to indicate game over
+    if (!res) {
+      exit(1);
+    }
   }
 }
 #ifdef __linux__

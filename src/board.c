@@ -1,6 +1,6 @@
 #include "tetris.h"
 #include <stdbool.h>
-void get_field(struct Field* f , enum CellType field[40][10]) {
+void get_field(struct Field* f, enum CellType field[40][10]) {
   for (int i = 0; i < 40; ++i) {
     for (int j = 0; j < 10; ++j) {
       field[i][j] = f->field[i][j];
@@ -23,7 +23,7 @@ void init_field(struct Field* f) {
     }
   }
   init_queue(&f->next);
-  f->allow_hold = true;
+  f->allow_hold             = true;
   struct OptionMinoType tmp = {.is_some = false};
   spawn_mino(f, tmp);
   // set_ghost_piece(f);
@@ -96,7 +96,7 @@ bool drop_step(struct Field* f) {
 }
 
 bool rotate_clockwise(struct Field* f) {
-  int test_cnt = 1;
+  int test_cnt                    = 1;
   struct FallingMino current_back = f->current;
   for (; test_cnt <= 5; ++test_cnt) {
     rotate_falling_mino_clockwise(&f->current, test_cnt);
@@ -178,15 +178,16 @@ int lock_mino(struct Field* f) {
     }
   }
   int lines_cleared = 0;
-  for (int i = 0; i < 40; ++i) {
+  for (int i = 0, k = 0; i < 40; ++i) {
     bool filled = true;
     for (int j = 0; j < 10; ++j) {
       filled &= is_occupied(f, i, j);
     }
     if (!filled) {
       for (int j = 0; j < 10; ++j) {
-        new_field[i][j] = f->field[i][j];
+        new_field[k][j] = f->field[i][j];
       }
+      k++;
     } else {
       lines_cleared++;
     }

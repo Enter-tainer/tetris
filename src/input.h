@@ -7,7 +7,7 @@
 // There is a "current" state and an "old" state (previous frame)
 extern struct KeyMap {
 	Uint8 up; Uint8 down; Uint8 left; Uint8 right;
-	Uint8 z; Uint8 x; Uint8 shift; Uint8 space; Uint8 enter; Uint8 esc;
+	Uint8 z; Uint8 x; Uint8 c; Uint8 shift; Uint8 space; Uint8 enter; Uint8 esc;
 } key, oldKey;
 
 // Updates the input structs to new values, and also handles SDL events
