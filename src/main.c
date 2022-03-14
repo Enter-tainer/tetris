@@ -41,6 +41,7 @@ int get_color(enum CellType c) {
   case Garbage:
     return COLOR_SHADOW;
   }
+    return COLOR_BLACK;
 }
 
 void draw() {
@@ -90,11 +91,7 @@ int MAIN(int argc, char* args[]) {
   graphics_draw_rect(0, 0, SCREEN_W, SCREEN_H);
   graphics_flip();
   init_field(&f);
-  graphics_set_color(COLOR_BLUE);
-  graphics_draw_rect(0, 0, 10, 10);
-  graphics_flip();
   while (true) {
-    printf("fuck");
     input_update();
     field_update();
     draw();

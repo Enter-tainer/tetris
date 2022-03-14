@@ -60,8 +60,8 @@ void graphics_quit() {
 }
 
 void graphics_flip() {
-	SDL_Delay(1000 / 60 - SDL_GetTicks() + frameTime);
-	frameTime = SDL_GetTicks();
+	// SDL_Delay(1000 / 60 - SDL_GetTicks() + frameTime);
+	// frameTime = SDL_GetTicks();
 	SDL_SetRenderDrawColor(renderer, 0, 192, 0, 255);
 	SDL_RenderPresent(renderer);
 	SDL_RenderClear(renderer);

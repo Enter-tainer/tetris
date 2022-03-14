@@ -1,4 +1,5 @@
 #include "input.h"
+#include <stdio.h>
 struct KeyMap key, oldKey;
 const int K_LEFT   = SDL_SCANCODE_LEFT;
 const int K_RIGHT  = SDL_SCANCODE_RIGHT;
@@ -13,7 +14,11 @@ const int K_ESC    = SDL_SCANCODE_ESCAPE;
 
 int input_update() {
   SDL_Event event;
-	SDL_WaitEvent(&event);
+  while (SDL_WaitEvent(&event)) {
+	  if (event.type >= SDL_KEYDOWN && event.type <= SDL_KEYUP) {
+		  break;
+	  }
+  }
 	oldKey.left = key.left;
 	oldKey.right = key.right;
 	oldKey.up = key.up;
