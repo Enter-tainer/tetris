@@ -48,3 +48,6 @@ enum MinoType pop_queue(struct MinoQueue* queue) {
   }
   return res;
 }
+enum MinoType peek_queue(struct MinoQueue* queue, int cnt) {
+  return queue->data[(queue->front + cnt) % 14];
+}

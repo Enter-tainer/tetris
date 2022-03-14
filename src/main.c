@@ -98,9 +98,9 @@ int MAIN(int argc, char* args[]) {
   graphics_flip();
   init_field(&f);
   while (true) {
+    draw();
     input_update();
     field_update();
-    draw();
   }
   return 0;
 }

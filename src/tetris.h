@@ -14,6 +14,9 @@ void init_queue(struct MinoQueue* queue);
 // get a mino from queue front, refill the queue if one bag is used
 enum MinoType pop_queue(struct MinoQueue* queue);
 
+// peek next minos, cnt == 0 indicates the first next mino, note that cnt should <= 7
+enum MinoType peek_queue(struct MinoQueue* queue, int cnt);
+
 enum CellType {
   IBlock,
   TBlock,
@@ -75,6 +78,12 @@ struct Field {
 
 // get current field, with current and ghost rendered
 void get_field(struct Field* f, enum CellType field[40][10]);
+
+// get current hold mino
+struct OptionMinoType get_hold(struct Field* f);
+
+// get the next queue
+struct MinoQueue* get_preview(struct Field* f);
 
 void init_field(struct Field* f);
 

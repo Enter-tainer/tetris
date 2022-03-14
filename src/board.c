@@ -26,7 +26,6 @@ void init_field(struct Field* f) {
   f->allow_hold             = true;
   struct OptionMinoType tmp = {.is_some = false};
   spawn_mino(f, tmp);
-  // set_ghost_piece(f);
 }
 void set_ghost_piece(struct Field* f) {
   struct FallingMino current_back = f->current;
@@ -34,6 +33,14 @@ void set_ghost_piece(struct Field* f) {
     ;
   f->ghost   = f->current;
   f->current = current_back;
+}
+
+struct OptionMinoType get_hold(struct Field* f) {
+  return f->hold;
+}
+
+struct MinoQueue* get_preview(struct Field* f) {
+  return &f->next;
 }
 
 bool is_valid(int x, int y) { return x >= 0 && y >= 0 && x < 40 && y < 10; }
