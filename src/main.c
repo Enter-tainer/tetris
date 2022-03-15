@@ -10,7 +10,7 @@
 
 // Size of the stage
 #define STAGE_W 10
-#define STAGE_H 20
+#define STAGE_H 21
 #define BLOCK_SIZE 16
 #define HALF_BLOCK_SIZE 8
 
@@ -53,13 +53,13 @@ int get_color(int c) {
   case ZBlock:
     return COLOR_RED;
   case Clean:
-    return COLOR_BLACK;
+    return COLOR_BACKGROUND;
   case Shadow:
     return COLOR_SHADOW;
   case Garbage:
     return COLOR_SHADOW;
   }
-  return COLOR_BLACK;
+  return COLOR_BACKGROUND;
 }
 
 void draw_border() {
@@ -88,7 +88,7 @@ void draw_block(int x, int y) {
 
 void draw_field() {
   get_field(&f, field);
-  for (int i = 19; i >= 0; i--) {
+  for (int i = 20; i >= 0; i--) {
     for (int j = 0; j <= 9; j++) {
       graphics_set_color(get_color(field[i][j]));
       int x = (STAGE_LEFT_MARGIN + j);
@@ -99,7 +99,7 @@ void draw_field() {
 }
 
 void draw_hold() {
-  graphics_set_color(COLOR_BLACK);
+  graphics_set_color(COLOR_BACKGROUND);
   graphics_fill_rect(0, 0, STAGE_LEFT_MARGIN * BLOCK_SIZE, SCREEN_H);
 
   int x = HOLD_LEFT_MARGIN;
@@ -113,6 +113,9 @@ void draw_hold() {
   hold.x     = x;
   hold.y     = y;
   hold.state = CounterClockwise;
+  if (!f.hold.is_some) {
+    return;
+  }
 
   // make mino align to the center
   if (hold.type == TMino || hold.type == ZMino || hold.type == SMino ||
@@ -149,7 +152,7 @@ void draw_hold() {
 
 void draw_preview() {
   // clear the preview area
-  graphics_set_color(COLOR_BLACK);
+  graphics_set_color(COLOR_BACKGROUND);
   graphics_fill_rect((PREVIEW_LEFT_MARGIN - 1) * BLOCK_SIZE, 0,
                      PREVIEW_WIDTH * BLOCK_SIZE, SCREEN_H);
 
@@ -162,7 +165,7 @@ void draw_preview() {
     max_index = MAX_PREVIEW - 1;
   }
   int cnt = 0;
-  for (int i = max_index; i >= 0; i--) {
+  for (int i = 0; i <= max_index; i++) {
     preview.type = peek_queue(&f.next, i);
     preview.x    = x;
     preview.y    = y;
@@ -261,7 +264,7 @@ void field_update() {
 #endif
 int MAIN(int argc, char* args[]) {
   graphics_init(SCREEN_W, SCREEN_H);
-  graphics_set_color(COLOR_BLACK);
+  graphics_set_color(COLOR_BACKGROUND);
   graphics_fill_rect(0, 0, SCREEN_W, SCREEN_H);
   graphics_flip();
   init_field(&f);
