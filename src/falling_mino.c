@@ -29,8 +29,8 @@ void get_cells(struct FallingMino* current, int* x_array, int* y_array) {
       break;
     }
     case R180: {
-      int dx[] = {0, 0, 0, 0};
-      int dy[] = {-2, -1, 0, 1};
+      int dx[] = {-1, -1, -1, -1};
+      int dy[] = {-1, 0, 1, 2};
       for (int i = 0; i < 4; ++i) {
         x_array[i] = dx[i] + current->x;
         y_array[i] = dy[i] + current->y;
@@ -39,7 +39,7 @@ void get_cells(struct FallingMino* current, int* x_array, int* y_array) {
     }
     case Clockwise: {
       int dx[] = {1, 0, -1, -2};
-      int dy[] = {0, 0, 0, 0};
+      int dy[] = {1, 1, 1 ,1};
       for (int i = 0; i < 4; ++i) {
         x_array[i] = dx[i] + current->x;
         y_array[i] = dy[i] + current->y;
@@ -47,7 +47,7 @@ void get_cells(struct FallingMino* current, int* x_array, int* y_array) {
       break;
     }
     case CounterClockwise: {
-      int dx[] = {-1, 0, 1, 2};
+      int dx[] = {-2, -1, 0, 1};
       int dy[] = {0, 0, 0, 0};
       for (int i = 0; i < 4; ++i) {
         x_array[i] = dx[i] + current->x;

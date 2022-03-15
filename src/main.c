@@ -10,7 +10,7 @@
 
 // Size of the stage
 #define STAGE_W 10
-#define STAGE_H 21
+#define STAGE_H 22
 #define BLOCK_SIZE 16
 #define HALF_BLOCK_SIZE 8
 
@@ -88,7 +88,7 @@ void draw_block(int x, int y) {
 
 void draw_field() {
   get_field(&f, field);
-  for (int i = 20; i >= 0; i--) {
+  for (int i = 21; i >= 0; i--) {
     for (int j = 0; j <= 9; j++) {
       graphics_set_color(get_color(field[i][j]));
       int x = (STAGE_LEFT_MARGIN + j);
