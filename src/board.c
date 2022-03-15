@@ -13,7 +13,7 @@ void get_field(struct Field* f, enum CellType field[40][10]) {
   }
   get_cells(&f->current, cell_x, cell_y);
   for (int i = 0; i < 4; ++i) {
-    field[cell_x[i]][cell_y[i]] = Shadow;
+    field[cell_x[i]][cell_y[i]] = to_cell_type(f->current.type);
   }
 }
 void init_field(struct Field* f) {
