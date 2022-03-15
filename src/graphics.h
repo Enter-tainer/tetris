@@ -1,16 +1,16 @@
 #ifndef TETRIS_GRAPHICS
 #define TETRIS_GRAPHICS
 
-#define COLOR_BLACK  0x000000FF
-#define COLOR_RED    0xFF0000FF
-#define COLOR_GREEN  0x00FF00FF
-#define COLOR_BLUE   0x0000FFFF
-#define COLOR_CYAN   0x00FFFFFF
-#define COLOR_YELLOW 0xFFFF00FF
-#define COLOR_PURPLE 0xA000FFFF
-#define COLOR_ORANGE 0xFFA000FF
+#define COLOR_BACKGROUND  0xffffefff
+#define COLOR_RED    0xef6f4fff
+#define COLOR_GREEN  0x6fcf5fff
+#define COLOR_BLUE   0x1f8fbfff
+#define COLOR_CYAN   0x4fafdfff
+#define COLOR_YELLOW 0xffdf3fff
+#define COLOR_PURPLE 0xbf5fafff
+#define COLOR_ORANGE 0xef9f3fff
 #define COLOR_WHITE  0xFFFFFFFF
-#define COLOR_SHADOW 0x606060FF
+#define COLOR_SHADOW 0x6f6f6fFF
 #define COLOR_GRAY_DARK 0xAAAAAAFF
 
 void graphics_init(int x, int y);
