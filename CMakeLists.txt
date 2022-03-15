@@ -16,4 +16,8 @@ src/board.c
 src/falling_mino.c
 )
 
+target_include_directories(tetris
+PUBLIC D:\\PROGRA~2\\MINGW-~1\\mingw64\\x86_64-w64-mingw32\\include
+)
+
 TARGET_LINK_LIBRARIES(tetris SDL2 SDL2_ttf)

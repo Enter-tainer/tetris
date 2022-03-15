@@ -62,9 +62,9 @@ void graphics_quit() {
 void graphics_flip() {
 	// SDL_Delay(1000 / 60 - SDL_GetTicks() + frameTime);
 	// frameTime = SDL_GetTicks();
-	SDL_SetRenderDrawColor(renderer, 0, 192, 0, 255);
+	// SDL_SetRenderDrawColor(renderer, 0, 192, 0, 255);
 	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
+	// SDL_RenderClear(renderer);
 }
 
 void graphics_set_color(unsigned int color) {
@@ -91,6 +91,15 @@ void graphics_generate_text(char *string) {
 }
 
 void graphics_draw_rect(int x, int y, int w, int h) {
+	SDL_Rect rect = { x, y, w, h };
+	SDL_RenderDrawRect(renderer, &rect);
+}
+
+void graphics_draw_line(int x1, int y1, int x2, int y2) {
+	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
+void graphics_fill_rect(int x, int y, int w, int h) {
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderFillRect(renderer, &rect);
 }

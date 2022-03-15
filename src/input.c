@@ -19,6 +19,9 @@ int input_update() {
 	  if (event.type >= SDL_KEYDOWN && event.type <= SDL_KEYUP) {
 		  break;
 	  }
+	  if (event.type == SDL_QUIT) {
+		  return 1;
+	  }
   }
 	oldKey.left = key.left;
 	oldKey.right = key.right;
