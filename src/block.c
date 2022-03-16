@@ -1,7 +1,6 @@
 #include "block.h"
 #include "tetris.h"
 
-
 int get_block(int c) {
   switch (c) {
   case IBlock:

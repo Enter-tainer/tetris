@@ -14,7 +14,8 @@ void init_queue(struct MinoQueue* queue);
 // get a mino from queue front, refill the queue if one bag is used
 enum MinoType pop_queue(struct MinoQueue* queue);
 
-// peek next minos, cnt == 0 indicates the first next mino, note that cnt should <= 7
+// peek next minos, cnt == 0 indicates the first next mino, note that cnt should
+// <= 7
 enum MinoType peek_queue(struct MinoQueue* queue, int cnt);
 
 enum CellType {
@@ -56,7 +57,8 @@ void spawn_falling_mino(struct FallingMino* current, enum MinoType type);
 void get_cells(struct FallingMino* current, int* x_array, int* y_array);
 // rotate the given mino, with considering its kick tests
 void rotate_falling_mino_clockwise(struct FallingMino* current, int test_cnt);
-void rotate_falling_mino_counter_clockwise(struct FallingMino* current, int test_cnt);
+void rotate_falling_mino_counter_clockwise(struct FallingMino* current,
+                                           int test_cnt);
 
 struct Field {
   enum CellType field[40][10];
