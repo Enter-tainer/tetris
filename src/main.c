@@ -2,12 +2,6 @@
 #include "graphics.h"
 #include "input.h"
 #include "tetris.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <time.h>
-#ifdef __linux__
-#include <unistd.h>
-#endif
 
 void field_update(struct Field* f, struct KeyMap* key) {
   if (key->down) {
@@ -42,12 +36,14 @@ void field_update(struct Field* f, struct KeyMap* key) {
     struct OptionMinoType tmp = {.is_some = false};
     bool res = spawn_mino(f, tmp); // test failure here to indicate game over
     if (!res) {
-      exit(1);
+      // game over
     }
   }
 }
 
 #ifdef __linux__
+#define MAIN main
+#elif RISCV
 #define MAIN main
 #else
 #define MAIN WinMain

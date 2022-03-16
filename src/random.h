@@ -1,6 +1,5 @@
 #pragma once
 #include "tetris.h"
-#include <inttypes.h>
 #include <stdint.h>
 struct XorShift {
   uint32_t a;

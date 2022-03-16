@@ -5,7 +5,7 @@ extern unsigned __stacktop;
 // initial stack pointer is first address of program
 __attribute__((section(".stack"), used)) unsigned* __stack_init = &__stacktop;
 
-int main();
+extern int main();
 
 __attribute__((section(".text.start"))) __attribute__((naked)) void _start() {
   asm("mv sp, %0\n\t" ::"r"(&__stacktop));
