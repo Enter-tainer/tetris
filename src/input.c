@@ -114,6 +114,9 @@ int input_update() {
         break;
       }
       if (cur == K_RIGHT_0) {
+		if (right_flag == 1) {
+			stop_flag = 0;
+		}
         right_flag = 1;
         continue;
       }
