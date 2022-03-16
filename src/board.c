@@ -25,6 +25,7 @@ void init_field(struct Field* f) {
   init_queue(&f->next);
   f->allow_hold             = true;
   struct OptionMinoType tmp = {.is_some = false};
+  f->hold                   = tmp;
   spawn_mino(f, tmp);
 }
 void set_ghost_piece(struct Field* f) {

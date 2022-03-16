@@ -59,8 +59,7 @@ int MAIN(int argc, char* args[]) {
   init_field(&f);
   while (true) {
     draw(&f);
-    if (input_update(&key) == 1)
-      return 0;
+    input_update(&key);
     field_update(&f, &key);
   }
   return 0;
