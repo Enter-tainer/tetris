@@ -24,6 +24,7 @@ src/map.c
 src/map.h
 src/sdl_interface.c
 src/sdl_interface.h
+src/libdevice.h
 )
 
 target_include_directories(tetris
@@ -46,8 +47,8 @@ src/input.c
 src/input.h
 src/board.c
 src/falling_mino.c
-src/map.c
-src/map.h
+src/libdevice.h
+src/libdevice.c
 )
 
 target_compile_definitions(tetris_rv PUBLIC RISCV)

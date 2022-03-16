@@ -1,4 +1,5 @@
 #include "input.h"
+#include "libdevice.h"
 #ifndef RISCV
 #include "sdl_interface.h"
 #endif
@@ -13,19 +14,12 @@
 #define K_C 0x21
 #define K_SPACE 0x29
 
-unsigned char* KEYBOARD_READY_ADDR;
-unsigned char* KEYBOARD_DATA_ADDR;
-#ifdef RISCV
-#define KBD_READY_ADDR ((volatile unsigned char*)0xfbadbeee)
-#define KBD_DATA_ADDR ((volatile unsigned char*)0xfbadbeef)
-#else
+#ifndef RISCV
 #define BUF_SIZE 32
 #define BUF_MASK (BUF_SIZE - 1)
 unsigned char key_buffer[32];
 unsigned char head = 0;
 unsigned char tail = 0;
-#define KBD_READY_ADDR KEYBOARD_READY_ADDR
-#define KBD_DATA_ADDR KEYBOARD_DATA_ADDR
 #endif
 
 #ifndef RISCV
@@ -33,7 +27,7 @@ unsigned char tail = 0;
 
 unsigned char kbd_ready() {
 #ifdef RISCV
-  return *KBD_READY_ADDR;
+  return keyboard_ready();
 #else
   return head != tail;
 #endif
@@ -41,7 +35,7 @@ unsigned char kbd_ready() {
 
 unsigned char kbd_data() {
 #ifdef RISCV
-  return *KBD_DATA_ADDR;
+  return keyboard_data();
 #else
   unsigned char ret = key_buffer[head];
 
