@@ -14,6 +14,8 @@ src/input.c
 src/input.h
 src/board.c
 src/falling_mino.c
+src/libdevice.h
+src/libdevice.c
 )
 
 target_include_directories(tetris
