@@ -63,6 +63,6 @@ add_custom_command(TARGET tetris_rv POST_BUILD
     COMMAND od -w4 -An --endian little -v -t x4 ./rom.bin > rom.hex
     COMMAND od -w4 -An --endian little -v -t x4 ./ram.bin > ram.hex
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Running CRC32 check..."
+    COMMENT "Generating rom and ram files..."
 )
 TARGET_LINK_LIBRARIES(tetris SDL2)
