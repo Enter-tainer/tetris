@@ -9,11 +9,15 @@ src/random.c
 src/random.h
 src/tetris.h
 src/graphics.h
-src/graphics.c
+src/graphics_x86.c
 src/input.c
 src/input.h
 src/board.c
 src/falling_mino.c
+src/map.c
+src/map.h
+src/sdl_interface.c
+src/sdl_interface.h
 )
 
 target_include_directories(tetris
