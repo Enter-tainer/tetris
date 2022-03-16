@@ -1,3 +1,4 @@
+#pragma once
 #include <stdint.h>
 #define CLOCK_ADDR ((volatile uint32_t*)0xfbadbedf)
 #define LED_ADDR ((volatile uint32_t*)0xfbadc0fe)
