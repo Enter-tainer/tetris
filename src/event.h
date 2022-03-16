@@ -1,7 +1,8 @@
 #pragma once
 #include "tetris.h"
 
-// left arrow pressed -> while(is pressing) { if is first time && press_time > DAS move_left_step, wait ARR  }
+// left arrow pressed -> while(is pressing) { if is first time && press_time >
+// DAS move_left_step, wait ARR  }
 
 // similar for right arrow
 
@@ -21,7 +22,8 @@
 // if mino cannot move down, disable gravity_timer and fire lock_timer
 
 // when mino if moved, reset lock_timer
-// when lock_timer arrives, [lock_mino, disable lock_timer], [spawn_mino, reset down_timer]
+// when lock_timer arrives, [lock_mino, disable lock_timer], [spawn_mino, reset
+// down_timer]
 
 // basic structure: event loop
 // while (1) {
@@ -30,4 +32,4 @@
 //   sleep 1 frame time
 // }
 //
-// 
+//

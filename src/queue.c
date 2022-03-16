@@ -29,7 +29,7 @@ void init_queue(struct MinoQueue* queue) {
   generate_bag(queue->data + 7);
   queue->front = 0;
   queue->rear  = 13;
-  queue->size = 14;
+  queue->size  = 14;
 }
 enum MinoType pop_queue(struct MinoQueue* queue) {
   enum MinoType res = queue->data[queue->front];
