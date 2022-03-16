@@ -1,8 +1,8 @@
 #include "libdevice.h"
+#ifdef RISCV
 // top of stack
 extern unsigned __stacktop;
 // initial stack pointer is first address of program
-#ifdef RISCV
 __attribute__((section(".stack"), used)) unsigned* __stack_init = &__stacktop;
 
 int main();
