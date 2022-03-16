@@ -3,8 +3,6 @@
 #include "sdl_interface.h"
 #endif
 
-struct KeyMap key;
-
 #define K_LEFT 0x6b
 #define K_RIGHT_0 0xe0
 #define K_RIGHT_1 0x74
@@ -52,9 +50,9 @@ unsigned char kbd_data() {
 #endif
 }
 
-int input_update() {
+int input_update(struct KeyMap* key) {
 #ifndef RISCV
-  sdl_wait_key(&key_buffer,&head,&tail);
+  sdl_wait_key(&key_buffer, &head, &tail);
 #endif
   // no block
   if (!kbd_ready()) {
@@ -66,7 +64,7 @@ int input_update() {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
       if (cur == K_LEFT) {
-        key.left = 1;
+        key->left = 1;
         break;
       }
       if (cur == K_RIGHT_0) {
@@ -74,88 +72,88 @@ int input_update() {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        key.right   = 1;
+        key->right = 1;
         right_flag = 0;
         break;
       }
       if (cur == K_UP) {
-        key.up = 1;
+        key->up = 1;
         break;
       }
       if (cur == K_DOWN) {
-        key.down = 1;
+        key->down = 1;
         break;
       }
       if (cur == K_Z) {
-        key.z = 1;
+        key->z = 1;
         break;
       }
       if (cur == K_X) {
-        key.x = 1;
+        key->x = 1;
         break;
       }
       if (cur == K_C) {
-        key.c = 1;
+        key->c = 1;
         break;
       }
       if (cur == K_SPACE) {
-        key.space = 1;
+        key->space = 1;
         break;
       }
       if (cur == 0xf0) {
-		if (right_flag == 1) {
-			right_flag = 0;
-		}
+        if (right_flag == 1) {
+          right_flag = 0;
+        }
         stop_flag = 1;
         continue;
       }
     } else {
       if (cur == K_LEFT) {
-        key.left  = 0;
+        key->left = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_RIGHT_0) {
-		if (right_flag == 1) {
-			stop_flag = 0;
-		}
+        if (right_flag == 1) {
+          stop_flag = 0;
+        }
         right_flag = 1;
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        key.up   = 0;
+        key->up    = 0;
         right_flag = 0;
         stop_flag  = 0;
         break;
       }
       if (cur == K_UP) {
-        key.up  = 0;
+        key->up   = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_DOWN) {
-        key.down  = 0;
+        key->down = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_Z) {
-        key.z  = 0;
+        key->z    = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_X) {
-        key.x  = 0;
+        key->x    = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_C) {
-      	key.c  = 0;
+        key->c    = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_SPACE) {
-        key.space  = 0;
-        stop_flag = 0;
+        key->space = 0;
+        stop_flag  = 0;
         break;
       }
       stop_flag = 0;

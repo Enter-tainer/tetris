@@ -4,6 +4,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(tetris 
 src/main.c
+src/block.h
+src/block.c
+src/draw.h
+src/draw.c
 src/queue.c
 src/random.c
 src/random.h
@@ -26,6 +30,10 @@ PUBLIC D:\\PROGRA~2\\MINGW-~1\\mingw64\\x86_64-w64-mingw32\\include
 
 add_executable(tetris_rv 
 src/main.c
+src/block.h
+src/block.c
+src/draw.h
+src/draw.c
 src/queue.c
 src/random.c
 src/random.h
@@ -42,4 +50,4 @@ src/map.h
 
 target_compile_definitions(tetris_rv PUBLIC RISCV)
 
-TARGET_LINK_LIBRARIES(tetris SDL2 SDL2_ttf)
+TARGET_LINK_LIBRARIES(tetris SDL2)

@@ -2,7 +2,6 @@
 #include "block.h"
 #include "map.h"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 
 // #include "logsys.h"
@@ -81,10 +80,8 @@ int get_block_type(enum BlockType b) {
 
 void sdl_init() {
   if (SDL_Init(SDL_INIT_VIDEO) == -1) {
-    // log_msgf(FATAL, "SDL_Init: %s\n", SDL_GetError());
   }
   if (SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer) == -1) {
-    // log_msgf(FATAL, "SDL_CreateWindowAndRenderer: %s\n", SDL_GetError());
   }
   SDL_SetWindowTitle(window, "Tetris");
 }

@@ -30,9 +30,9 @@ void graphics_init(int x, int y) {
   graphics_flip();
 }
 
-void graphics_set_block(unsigned char block) { block_type = block; }
+// void graphics_set_block(unsigned char block) { block_type = block; }
 
-void graphics_draw_rect(int x, int y, int w, int h) {
+void graphics_draw_rect(int x, int y, int w, int h,unsigned char block_type) {
   for (int i = 0; i < w; i++)
     map[idx(x + i, y)] = Block_BG_T;
   for (int i = 0; i < w; i++)
@@ -43,9 +43,9 @@ void graphics_draw_rect(int x, int y, int w, int h) {
     map[idx(x + w - 1, y + i)] = Block_BG_R;
 }
 
-void graphics_draw_line(int x1, int y1, int x2, int y2) {}
+void graphics_draw_line(int x1, int y1, int x2, int y2,unsigned char block_type) {}
 
-void graphics_fill_rect(int x, int y, int w, int h) {
+void graphics_fill_rect(int x, int y, int w, int h,unsigned char block_type) {
   for (int i = x; i < x + w; i++) {
     for (int j = y; j < y + h; j++) {
       map[idx(i, j)] = block_type;

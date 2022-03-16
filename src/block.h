@@ -15,7 +15,7 @@ enum BlockType{
     Block_BG,
     Block_BG_DARK,
 
-    // Block light
+    // Block with lighter than original color
     Block_I_L,
     Block_T_L,
     Block_O_L,
@@ -34,19 +34,31 @@ enum BlockType{
     Block_Z_Top,
 
     // border blocks with background color
+    // block with background color and left border
     Block_BG_L,
+    // block with background color and right border
     Block_BG_R,
+    // block with background color and top border
     Block_BG_T,
+    // block with background color and bottom border
     Block_BG_B,
+    // block with background color and right top corner
     Block_BG_RT,
+    // block with background color and right bottom corner
     Block_BG_RB,
+    // block with background color and left bottom corner
     Block_BG_LB,
+    // block with background color and left top corner
     Block_BG_LT
 };
 
-enum BlockProtoType{
+enum BlockPrototype{
     Block_Block,
     Block_Block_Light,
     Block_Block_Top,
     Block_Line
 };
+
+int get_block(int c);
+int get_block_light(int c);
+int get_block_top(int c);

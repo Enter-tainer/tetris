@@ -3,7 +3,7 @@
 
 // A couple structs that contain key/mouse button status
 // There is a "current" state and an "old" state (previous frame)
-extern struct KeyMap {
+struct KeyMap {
   unsigned char up;
   unsigned char down;
   unsigned char left;
@@ -15,7 +15,7 @@ extern struct KeyMap {
   unsigned char space;
   unsigned char enter;
   unsigned char esc;
-} key;
+};
 
 // Updates the input structs to new values, and also handles SDL events
 int input_update();
