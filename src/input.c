@@ -62,12 +62,11 @@ int input_update() {
   }
   unsigned char stop_flag  = 0;
   unsigned char right_flag = 0;
-  unsigned char state[8]   = {0, 0, 0, 0, 0, 0, 0, 0};
   while (kbd_ready()) {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
       if (cur == K_LEFT) {
-        state[0] = 1;
+        key.left = 1;
         break;
       }
       if (cur == K_RIGHT_0) {
@@ -75,41 +74,44 @@ int input_update() {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        state[1]   = 1;
+        key.right   = 1;
         right_flag = 0;
         break;
       }
       if (cur == K_UP) {
-        state[2] = 1;
+        key.up = 1;
         break;
       }
       if (cur == K_DOWN) {
-        state[3] = 1;
+        key.down = 1;
         break;
       }
       if (cur == K_Z) {
-        state[4] = 1;
+        key.z = 1;
         break;
       }
       if (cur == K_X) {
-        state[5] = 1;
+        key.x = 1;
         break;
       }
       if (cur == K_C) {
-        state[6] = 1;
+        key.c = 1;
         break;
       }
       if (cur == K_SPACE) {
-        state[7] = 1;
+        key.space = 1;
         break;
       }
       if (cur == 0xf0) {
+		if (right_flag == 1) {
+			right_flag = 0;
+		}
         stop_flag = 1;
         continue;
       }
     } else {
       if (cur == K_LEFT) {
-        state[0]  = 0;
+        key.left  = 0;
         stop_flag = 0;
         break;
       }
@@ -121,52 +123,44 @@ int input_update() {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        state[1]   = 0;
+        key.up   = 0;
         right_flag = 0;
         stop_flag  = 0;
         break;
       }
       if (cur == K_UP) {
-        state[2]  = 0;
+        key.up  = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_DOWN) {
-        state[3]  = 0;
+        key.down  = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_Z) {
-        state[4]  = 0;
+        key.z  = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_X) {
-        state[5]  = 0;
+        key.x  = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_C) {
-        state[6]  = 0;
+      	key.c  = 0;
         stop_flag = 0;
         break;
       }
       if (cur == K_SPACE) {
-        state[7]  = 0;
+        key.space  = 0;
         stop_flag = 0;
         break;
       }
       stop_flag = 0;
     }
   }
-  key.up    = state[2];
-  key.down  = state[3];
-  key.left  = state[0];
-  key.right = state[1];
-  key.z     = state[4];
-  key.x     = state[5];
-  key.c     = state[6];
-  key.space = state[7];
   return 0;
 }
 //#endif
