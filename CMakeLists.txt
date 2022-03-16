@@ -18,6 +18,8 @@ src/input.c
 src/input.h
 src/board.c
 src/falling_mino.c
+src/libdevice.h
+src/libdevice.c
 src/map.c
 src/map.h
 src/sdl_interface.c
