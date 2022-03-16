@@ -1,16 +1,27 @@
-#include "block.h"
 #include "graphics.h"
+#include "block.h"
 #include "map.h"
 
+#ifndef RISCV
+#include "sdl_interface.h"
+#endif
+
+#ifndef RISCV
+unsigned char v_mem[MAP_SIZE];
+#endif
 enum BlockType block_type;
 
 void graphics_flip() {
-  // TODO
+#ifndef RISCV
+  sdl_sync();
+#endif
 }
 
 void graphics_init(int x, int y) {
-  // TODO: map set to v_mem
-  map = (unsigned char*)0xdeadbeef;
+#ifndef RISCV
+  sdl_init();
+  map = (unsigned char*)v_mem;
+#endif
   for (int i = 0; i < MAP_WIDTH; i++) {
     for (int j = 0; j < MAP_HEIGHT; j++) {
       map[idx(i, j)] = Block_BG_DARK;
@@ -19,7 +30,7 @@ void graphics_init(int x, int y) {
   graphics_flip();
 }
 
-void graphics_set_block(unsigned char color) { block_type = color; }
+void graphics_set_block(unsigned char block) { block_type = block; }
 
 void graphics_draw_rect(int x, int y, int w, int h) {
   for (int i = 0; i < w; i++)

@@ -23,3 +23,4 @@
 
 void sdl_sync();
 void sdl_init();
+unsigned char sdl_wait_key();

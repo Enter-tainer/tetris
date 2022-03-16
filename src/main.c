@@ -299,24 +299,31 @@ void draw() {
 
 void field_update() {
   if (key.down) {
+    key.down=0;
     drop_step(&f);
   }
   if (key.left) {
+    key.left=0;
     move_left_step(&f);
   }
   if (key.right) {
+    key.right=0;
     move_right_step(&f);
   }
   if (key.z) {
+    key.z=0;
     rotate_counter_clockwise(&f);
   }
   if (key.x) {
+    key.x=0;
     rotate_clockwise(&f);
   }
   if (key.c) {
+    key.c=0;
     hold_mino(&f);
   }
   if (key.space) {
+    key.space=0;
     while (drop_step(&f))
       ;
     lock_mino(&f);
@@ -337,7 +344,7 @@ int MAIN(int argc, char* args[]) {
   init_field(&f);
   while (true) {
     draw();
-    if (input_update())
+    if (input_update()==1)
       return 0;
     field_update();
   }

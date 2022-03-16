@@ -9,7 +9,7 @@ src/random.c
 src/random.h
 src/tetris.h
 src/graphics.h
-src/graphics_x86.c
+src/graphics.c
 src/input.c
 src/input.h
 src/board.c
@@ -23,5 +23,23 @@ src/sdl_interface.h
 target_include_directories(tetris
 PUBLIC D:\\PROGRA~2\\MINGW-~1\\mingw64\\x86_64-w64-mingw32\\include
 )
+
+add_executable(tetris_rv 
+src/main.c
+src/queue.c
+src/random.c
+src/random.h
+src/tetris.h
+src/graphics.h
+src/graphics.c
+src/input.c
+src/input.h
+src/board.c
+src/falling_mino.c
+src/map.c
+src/map.h
+)
+
+target_compile_definitions(tetris_rv PUBLIC RISCV)
 
 TARGET_LINK_LIBRARIES(tetris SDL2 SDL2_ttf)

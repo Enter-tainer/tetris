@@ -121,10 +121,80 @@ void sdl_sync() {
         sdl_set_color(COLOR_BACKGROUND);
         sdl_fill_rect(i * BLOCK_SIZE, j * BLOCK_SIZE, BLOCK_SIZE,
                       (BLOCK_SIZE >> 1));
-      }else{
+      } else {
         sdl_fill_rect(i * BLOCK_SIZE, j * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-	  }
+      }
     }
   }
   SDL_RenderPresent(renderer);
+}
+
+#define K_LEFT 0x6b
+#define K_RIGHT_0 0xe0
+#define K_RIGHT_1 0x74
+#define K_UP 0x75
+#define K_DOWN 0x72
+#define K_Z 0x1a
+#define K_X 0x22
+#define K_C 0x21
+#define K_SPACE 0x29
+#define BUF_SIZE 32
+#define BUF_MASK (BUF_SIZE - 1)
+
+unsigned char sdl_wait_key(unsigned char* queue, unsigned char* head,
+                           unsigned char* tail) {
+  if (((*tail + 1) & BUF_MASK) == *head) {
+    return 0;
+  }
+  SDL_Event event;
+  while (SDL_PollEvent(&event)) {
+    if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP) {
+      continue;
+    }
+
+    if (event.key.keysym.sym == SDLK_RIGHT) {
+      queue[(*tail)] = K_RIGHT_0;
+      *tail          = (*tail + 1) & BUF_MASK;
+      if (((*tail + 1) & BUF_MASK) == *head)
+        return 0;
+    }
+
+    if (event.type == SDL_KEYUP) {
+      queue[(*tail)] = 0xf0;
+      *tail          = (*tail + 1) & BUF_MASK;
+      if (((*tail + 1) & BUF_MASK) == *head)
+        return 0;
+    }
+
+    switch (event.key.keysym.sym) {
+    case SDLK_LEFT:
+      queue[(*tail)] = K_LEFT;
+      break;
+    case SDLK_RIGHT:
+      queue[(*tail)] = K_RIGHT_1;
+      break;
+    case SDLK_UP:
+      queue[(*tail)] = K_UP;
+      break;
+    case SDLK_DOWN:
+      queue[(*tail)] = K_DOWN;
+      break;
+    case SDLK_z:
+      queue[(*tail)] = K_Z;
+      break;
+    case SDLK_x:
+      queue[(*tail)] = K_X;
+      break;
+    case SDLK_c:
+      queue[(*tail)] = K_C;
+      break;
+    case SDLK_SPACE:
+      queue[(*tail)] = K_SPACE;
+      break;
+    default:
+      continue;
+      break;
+    }
+    *tail = (*tail + 1) & BUF_MASK;
+  }
 }
