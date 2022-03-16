@@ -15,6 +15,6 @@ void set_led(uint32_t val);
 
 void set_vram(int x, int y, uint8_t pixel);
 
-uint8_t kbd_ready();
+uint8_t keyboard_ready();
 
-uint8_t kbd_get();
+uint8_t keyboard_data();

@@ -30,6 +30,6 @@ void set_vram(int x, int y, uint8_t pixel) {
   VRAM_ADDR[x * VRAM_Y + y] = pixel;
 }
 
-uint8_t kbd_ready() { return *KBD_READY_ADDR; }
+uint8_t keyboard_ready() { return *KBD_READY_ADDR; }
 
-uint8_t kbd_get() { return *KBD_DATA_ADDR; }
+uint8_t keyboard_data() { return *KBD_DATA_ADDR; }
