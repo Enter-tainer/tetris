@@ -54,14 +54,15 @@ int MAIN(int argc, char* args[]) {
   struct Field f;
   struct KeyMap key;
   graphics_init(SCREEN_W, SCREEN_H);
-  while (true){
+  while (true) {
     init_field(&f);
     draw_start_view();
     wait_any_key_down();
     while (true) {
       draw(&f);
       input_update(&key);
-      if (field_update(&f, &key))break;
+      if (field_update(&f, &key))
+        break;
     }
     draw_end_view();
     wait_any_key_down();

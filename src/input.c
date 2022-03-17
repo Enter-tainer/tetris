@@ -59,7 +59,8 @@ int input_update(struct KeyMap* key) {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
       if (cur == K_LEFT) {
-        if(key)key->left = 1;
+        if (key)
+          key->left = 1;
         ret |= 1;
         break;
       }
@@ -68,38 +69,45 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        if(key)key->right = 1;
+        if (key)
+          key->right = 1;
         ret |= 1;
         right_flag = 0;
         break;
       }
       if (cur == K_UP) {
-        if(key)key->up = 1;
+        if (key)
+          key->up = 1;
         ret |= 1;
         break;
       }
       if (cur == K_DOWN) {
-        if(key)key->down = 1;
+        if (key)
+          key->down = 1;
         ret |= 1;
         break;
       }
       if (cur == K_Z) {
-        if(key)key->z = 1;
+        if (key)
+          key->z = 1;
         ret |= 1;
         break;
       }
       if (cur == K_X) {
-        if(key)key->x = 1;
+        if (key)
+          key->x = 1;
         ret |= 1;
         break;
       }
       if (cur == K_C) {
-        if(key)key->c = 1;
+        if (key)
+          key->c = 1;
         ret |= 1;
         break;
       }
       if (cur == K_SPACE) {
-        if(key)key->space = 1;
+        if (key)
+          key->space = 1;
         ret |= 1;
         break;
       }
@@ -112,7 +120,8 @@ int input_update(struct KeyMap* key) {
       }
     } else {
       if (cur == K_LEFT) {
-        if(key)key->left = 0;
+        if (key)
+          key->left = 0;
         ret |= 2;
         stop_flag = 0;
         break;
@@ -125,44 +134,51 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        if(key)key->up = 0;
+        if (key)
+          key->up = 0;
         ret |= 2;
         right_flag = 0;
         stop_flag  = 0;
         break;
       }
       if (cur == K_UP) {
-        if(key)key->up = 0;
+        if (key)
+          key->up = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_DOWN) {
-        if(key)key->down = 0;
+        if (key)
+          key->down = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_Z) {
-        if(key)key->z = 0;
+        if (key)
+          key->z = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_X) {
-        if(key)key->x = 0;
+        if (key)
+          key->x = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_C) {
-        if(key)key->c = 0;
+        if (key)
+          key->c = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_SPACE) {
-        if(key)key->space = 0;
+        if (key)
+          key->space = 0;
         ret |= 2;
         stop_flag = 0;
         break;
