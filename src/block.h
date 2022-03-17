@@ -1,5 +1,5 @@
 #pragma once
-enum BlockType {
+enum __attribute__((__packed__)) BlockType {
   Block_I,
   Block_T,
   Block_O,
@@ -52,7 +52,7 @@ enum BlockType {
   Block_BG_LT
 };
 
-enum BlockPrototype {
+enum __attribute__((__packed__)) BlockPrototype {
   Block_Block,
   Block_Block_Light,
   Block_Block_Top,

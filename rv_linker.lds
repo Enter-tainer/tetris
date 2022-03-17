@@ -32,9 +32,9 @@ SECTIONS
   } > ram
   .stack (NOLOAD):
   {
-    . = ALIGN(8);
+    . = ALIGN(4);
     . = . + STACK_SIZE;
-    . = ALIGN(8);
+    . = ALIGN(4);
     __stacktop = .;
   } > ram
 }

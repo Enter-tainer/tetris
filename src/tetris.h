@@ -2,7 +2,15 @@
 #include "random.h"
 #include <stdbool.h>
 
-enum MinoType { IMino, TMino, OMino, JMino, LMino, SMino, ZMino };
+enum __attribute__((__packed__)) MinoType {
+  IMino,
+  TMino,
+  OMino,
+  JMino,
+  LMino,
+  SMino,
+  ZMino
+};
 struct MinoQueue {
   enum MinoType data[14];
   int front, rear, size;
@@ -18,7 +26,7 @@ enum MinoType pop_queue(struct MinoQueue* queue);
 // <= 7
 enum MinoType peek_queue(struct MinoQueue* queue, int cnt);
 
-enum CellType {
+enum __attribute__((__packed__)) CellType {
   IBlock,
   TBlock,
   OBlock,
@@ -31,7 +39,12 @@ enum CellType {
   Garbage,
 };
 
-enum RotationState { Original, Clockwise, R180, CounterClockwise };
+enum __attribute__((__packed__)) RotationState {
+  Original,
+  Clockwise,
+  R180,
+  CounterClockwise
+};
 static inline enum RotationState rotate_state_clockwise(enum RotationState s) {
   return (enum RotationState)((int)s + 1) % 4;
 };
