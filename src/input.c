@@ -1,6 +1,5 @@
 #include "input.h"
 #include "libdevice.h"
-#include <stdio.h>
 #ifndef RISCV
 #include "sdl_interface.h"
 #endif
