@@ -1,7 +1,7 @@
 #pragma once
 
 #define COLOR_BACKGROUND 0xffffefff
-#define COLOR_BACKGROUND_DARK 0xf7f7e9ff
+#define COLOR_BACKGROUND_DARK 0xefefdfff
 #define COLOR_RED 0xef6f4fff
 #define COLOR_GREEN 0x6fcf5fff
 #define COLOR_BLUE 0x1f8fbfff
