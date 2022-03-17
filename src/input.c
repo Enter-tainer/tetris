@@ -54,11 +54,13 @@ int input_update(struct KeyMap* key) {
   }
   unsigned char stop_flag  = 0;
   unsigned char right_flag = 0;
+  int ret;
   while (kbd_ready()) {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
       if (cur == K_LEFT) {
-        key->left = 1;
+        if(key)key->left = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_RIGHT_0) {
@@ -66,32 +68,39 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        key->right = 1;
+        if(key)key->right = 1;
+        ret |= 1;
         right_flag = 0;
         break;
       }
       if (cur == K_UP) {
-        key->up = 1;
+        if(key)key->up = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_DOWN) {
-        key->down = 1;
+        if(key)key->down = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_Z) {
-        key->z = 1;
+        if(key)key->z = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_X) {
-        key->x = 1;
+        if(key)key->x = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_C) {
-        key->c = 1;
+        if(key)key->c = 1;
+        ret |= 1;
         break;
       }
       if (cur == K_SPACE) {
-        key->space = 1;
+        if(key)key->space = 1;
+        ret |= 1;
         break;
       }
       if (cur == 0xf0) {
@@ -103,7 +112,8 @@ int input_update(struct KeyMap* key) {
       }
     } else {
       if (cur == K_LEFT) {
-        key->left = 0;
+        if(key)key->left = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
@@ -115,44 +125,58 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        key->up    = 0;
+        if(key)key->up = 0;
+        ret |= 2;
         right_flag = 0;
         stop_flag  = 0;
         break;
       }
       if (cur == K_UP) {
-        key->up   = 0;
+        if(key)key->up = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_DOWN) {
-        key->down = 0;
+        if(key)key->down = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_Z) {
-        key->z    = 0;
+        if(key)key->z = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_X) {
-        key->x    = 0;
+        if(key)key->x = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_C) {
-        key->c    = 0;
+        if(key)key->c = 0;
+        ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_SPACE) {
-        key->space = 0;
-        stop_flag  = 0;
+        if(key)key->space = 0;
+        ret |= 2;
+        stop_flag = 0;
         break;
       }
       stop_flag = 0;
     }
   }
-  return 0;
+  return ret;
 }
-//#endif
+
+void wait_any_key_down() {
+  while (1) {
+    int ret = input_update(0);
+    if (ret != -1 && (ret & 1))
+      return;
+  }
+}

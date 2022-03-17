@@ -29,3 +29,5 @@
 #define MAX_PREVIEW 5
 
 void draw(struct Field* f);
+void draw_start_view();
+void draw_end_view();

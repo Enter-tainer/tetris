@@ -170,3 +170,67 @@ void draw(struct Field* f) {
   draw_preview(f);
   graphics_flip(f);
 }
+
+void draw_start_view() {
+  graphics_fill_rect(STAGE_LEFT_MARGIN * BLOCK_SIZE,
+                     STAGE_TOP_MARGIN * BLOCK_SIZE, STAGE_W * BLOCK_SIZE,
+                     STAGE_H * BLOCK_SIZE, Block_BG);
+
+  // draw character "G"
+  graphics_fill_rect(STAGE_LEFT_MARGIN * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 7) * BLOCK_SIZE, 4 * BLOCK_SIZE,
+                     6 * BLOCK_SIZE, Block_S);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 1) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 2 * BLOCK_SIZE,
+                     4 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 3) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     2 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 2) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 10) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     1 * BLOCK_SIZE, Block_S);
+
+  // draw character "O"
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 6) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 7) * BLOCK_SIZE, 4 * BLOCK_SIZE,
+                     6 * BLOCK_SIZE, Block_S);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 7) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 2 * BLOCK_SIZE,
+                     4 * BLOCK_SIZE, Block_BG);
+  graphics_flip();
+}
+
+void draw_end_view() {
+  graphics_fill_rect(STAGE_LEFT_MARGIN * BLOCK_SIZE,
+                     STAGE_TOP_MARGIN * BLOCK_SIZE, STAGE_W * BLOCK_SIZE,
+                     STAGE_H * BLOCK_SIZE, Block_BG);
+
+  // draw character "G"
+  graphics_fill_rect(STAGE_LEFT_MARGIN * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 7) * BLOCK_SIZE, 4 * BLOCK_SIZE,
+                     6 * BLOCK_SIZE, Block_Z);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 1) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 2 * BLOCK_SIZE,
+                     4 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 3) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     2 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 2) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 10) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     1 * BLOCK_SIZE, Block_Z);
+
+  // draw character "O"
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 6) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 7) * BLOCK_SIZE, 4 * BLOCK_SIZE,
+                     6 * BLOCK_SIZE, Block_Z);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 7) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 2 * BLOCK_SIZE,
+                     4 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 9) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 8) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     2 * BLOCK_SIZE, Block_BG);
+  graphics_fill_rect((STAGE_LEFT_MARGIN + 8) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + 10) * BLOCK_SIZE, 1 * BLOCK_SIZE,
+                     1 * BLOCK_SIZE, Block_Z);
+  graphics_flip();
+}

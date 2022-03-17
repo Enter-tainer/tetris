@@ -3,7 +3,8 @@
 #include "input.h"
 #include "tetris.h"
 
-void field_update(struct Field* f, struct KeyMap* key) {
+// Update field after input, return 1 when game is over
+char field_update(struct Field* f, struct KeyMap* key) {
   if (key->down) {
     key->down = 0;
     drop_step(f);
@@ -36,9 +37,10 @@ void field_update(struct Field* f, struct KeyMap* key) {
     struct OptionMinoType tmp = {.is_some = false};
     bool res = spawn_mino(f, tmp); // test failure here to indicate game over
     if (!res) {
-      // game over
+      return 1;
     }
   }
+  return 0;
 }
 
 #ifdef __linux__
@@ -52,11 +54,17 @@ int MAIN(int argc, char* args[]) {
   struct Field f;
   struct KeyMap key;
   graphics_init(SCREEN_W, SCREEN_H);
-  init_field(&f);
-  while (true) {
-    draw(&f);
-    input_update(&key);
-    field_update(&f, &key);
+  while (true){
+    init_field(&f);
+    draw_start_view();
+    wait_any_key_down();
+    while (true) {
+      draw(&f);
+      input_update(&key);
+      if (field_update(&f, &key))break;
+    }
+    draw_end_view();
+    wait_any_key_down();
   }
   return 0;
 }
