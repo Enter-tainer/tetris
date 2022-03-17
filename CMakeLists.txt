@@ -62,6 +62,7 @@ add_custom_command(TARGET tetris_rv POST_BUILD
     COMMAND llvm-objcopy ./tetris_rv --dump-section .text=rom.bin --dump-section .data=ram.bin
     COMMAND od -w4 -An --endian little -v -t x4 ./rom.bin > rom.hex
     COMMAND od -w4 -An --endian little -v -t x4 ./ram.bin > ram.hex
+    COMMAND llvm-objdump -S tetris_rv > tetris.asm
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating rom and ram files..."
 )
