@@ -57,7 +57,7 @@ int MAIN(int argc, char* args[]) {
   while (true) {
     init_field(&f);
     draw_start_view();
-    wait_any_key_down();
+    wait_any_key_down(&key);
     while (true) {
       draw(&f);
       input_update(&key);
@@ -65,7 +65,7 @@ int MAIN(int argc, char* args[]) {
         break;
     }
     draw_end_view();
-    wait_any_key_down();
+    wait_any_key_down(&key);
   }
   return 0;
 }

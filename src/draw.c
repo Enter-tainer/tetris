@@ -219,7 +219,7 @@ void draw_end_view() {
                      (STAGE_TOP_MARGIN + 10) * BLOCK_SIZE, 1 * BLOCK_SIZE,
                      1 * BLOCK_SIZE, Block_Z);
 
-  // draw character "O"
+  // draw character "G"
   graphics_fill_rect((STAGE_LEFT_MARGIN + 6) * BLOCK_SIZE,
                      (STAGE_TOP_MARGIN + 7) * BLOCK_SIZE, 4 * BLOCK_SIZE,
                      6 * BLOCK_SIZE, Block_Z);

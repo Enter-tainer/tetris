@@ -25,5 +25,5 @@ int input_update();
 
 // Wait any key in kaymap down.
 // During waiting, any key code will be ignored.
-void wait_any_key_down();
+void wait_any_key_down(struct KeyMap* key);
 #endif

@@ -1,5 +1,6 @@
 #include "input.h"
 #include "libdevice.h"
+#include <stdio.h>
 #ifndef RISCV
 #include "sdl_interface.h"
 #endif
@@ -59,8 +60,7 @@ int input_update(struct KeyMap* key) {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
       if (cur == K_LEFT) {
-        if (key)
-          key->left = 1;
+        key->left = 1;
         ret |= 1;
         break;
       }
@@ -69,45 +69,38 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        if (key)
-          key->right = 1;
+        key->right = 1;
         ret |= 1;
         right_flag = 0;
         break;
       }
       if (cur == K_UP) {
-        if (key)
-          key->up = 1;
+        key->up = 1;
         ret |= 1;
         break;
       }
       if (cur == K_DOWN) {
-        if (key)
-          key->down = 1;
+        key->down = 1;
         ret |= 1;
         break;
       }
       if (cur == K_Z) {
-        if (key)
-          key->z = 1;
+        key->z = 1;
         ret |= 1;
         break;
       }
       if (cur == K_X) {
-        if (key)
-          key->x = 1;
+        key->x = 1;
         ret |= 1;
         break;
       }
       if (cur == K_C) {
-        if (key)
-          key->c = 1;
+        key->c = 1;
         ret |= 1;
         break;
       }
       if (cur == K_SPACE) {
-        if (key)
-          key->space = 1;
+        key->space = 1;
         ret |= 1;
         break;
       }
@@ -120,8 +113,7 @@ int input_update(struct KeyMap* key) {
       }
     } else {
       if (cur == K_LEFT) {
-        if (key)
-          key->left = 0;
+        key->left = 0;
         ret |= 2;
         stop_flag = 0;
         break;
@@ -134,51 +126,44 @@ int input_update(struct KeyMap* key) {
         continue;
       }
       if (cur == K_RIGHT_1 && right_flag) {
-        if (key)
-          key->up = 0;
+        key->up = 0;
         ret |= 2;
         right_flag = 0;
         stop_flag  = 0;
         break;
       }
       if (cur == K_UP) {
-        if (key)
-          key->up = 0;
+        key->up = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_DOWN) {
-        if (key)
-          key->down = 0;
+        key->down = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_Z) {
-        if (key)
-          key->z = 0;
+        key->z = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_X) {
-        if (key)
-          key->x = 0;
+        key->x = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_C) {
-        if (key)
-          key->c = 0;
+        key->c = 0;
         ret |= 2;
         stop_flag = 0;
         break;
       }
       if (cur == K_SPACE) {
-        if (key)
-          key->space = 0;
+        key->space = 0;
         ret |= 2;
         stop_flag = 0;
         break;
@@ -189,10 +174,15 @@ int input_update(struct KeyMap* key) {
   return ret;
 }
 
-void wait_any_key_down() {
+void wait_any_key_down(struct KeyMap* key) {
   while (1) {
-    int ret = input_update(0);
-    if (ret != -1 && (ret & 1))
+    int ret = input_update(key);
+    if (ret != -1 && (ret & 1)) {
+      unsigned char* p = (unsigned char*)key;
+      for (int i = 0; i < sizeof(struct KeyMap); i++) {
+        p[i] = 0;
+      }
       return;
+    }
   }
 }
