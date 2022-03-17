@@ -3,6 +3,7 @@
 #include "input.h"
 #include "tetris.h"
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #ifdef __linux__
 #include <time.h>
@@ -157,9 +158,9 @@ int MAIN(int argc, char* args[]) {
       ++frame_count;
       // 16666us per frame
 #ifndef __linux__
-      sleep(16666 - (time() - tim));
+      sleep(16666 - (clock() - tim) > 0 ? 16666 - (clock() - tim) : 0);
 #else
-      usleep(16666 - (clock() - tim));
+      usleep(16666 - (clock() - tim) > 0 ? 16666 - (clock() - tim) : 0);
 #endif
       // fprintf(stderr, "fc = %d\n", frame_count);
     }
