@@ -91,6 +91,11 @@ struct Field {
    */
 };
 
+struct GameHandling {
+  int das, arr, sdf, gravity, is_as_l, is_as_r;
+  int is_lock, lock_timer, lock_frame;
+};
+
 // get current field, with current and ghost rendered
 void get_field(struct Field* f, enum CellType field[40][10]);
 
