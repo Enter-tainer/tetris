@@ -9,8 +9,6 @@ uint32_t xorshift32(struct XorShift* state) {
   x ^= x << 5;
   return state->a = x;
 }
-
-uint32_t my_rand() {
-  static struct XorShift t = {.a = 123};
-  return xorshift32(&t);
-}
+static struct XorShift t = {.a = 123};
+uint32_t my_rand() { return xorshift32(&t); }
+void srand(uint32_t seed) { t.a = seed; }

@@ -3,6 +3,7 @@
 #include "handle.h"
 #include "input.h"
 #include "tetris.h"
+#include <stdlib.h>
 #ifndef RISCV
 #include <time.h>
 #include <unistd.h>
@@ -168,7 +169,6 @@ int MAIN(int argc, char* args[]) {
       *((unsigned char*)&key_history + i) = 0;
       *((unsigned char*)&key + i)         = 0;
     }
-    init_field(&f);
     int frame_count = 0;
     draw_start_view();
     wait_any_key_down(&key);
@@ -182,6 +182,12 @@ int MAIN(int argc, char* args[]) {
         .lock_timer = 0,  // lock_timer
         .move_rate  = 20};
     init_gh(&gh);
+#ifdef RISCV
+    srand(time());
+#else
+    srand(clock());
+#endif
+    init_field(&f);
     while (true) {
 #ifdef RISCV
       int64_t tim = time();
