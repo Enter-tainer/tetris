@@ -25,6 +25,8 @@ src/map.h
 src/sdl_interface.c
 src/sdl_interface.h
 src/libdevice.h
+src/handle.c
+src/handle.h
 )
 
 target_include_directories(tetris
