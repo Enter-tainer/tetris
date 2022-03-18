@@ -55,6 +55,8 @@ src/map.c
 src/map.h
 )
 
+target_compile_options(tetris PUBLIC -Wall -Wshadow -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
+target_link_options(tetris PUBLIC -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
 target_compile_definitions(tetris_rv PUBLIC RISCV)
 set(LINKER_SCRIPT "rv_linker.lds")
 
