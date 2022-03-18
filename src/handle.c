@@ -15,7 +15,7 @@ void increase_timer(struct GameTimer* timer) {
     ++timer->frames;
 }
 
-void time_increase(struct GameHandling* gh) {
+void increase_all_timers(struct GameHandling* gh) {
   increase_timer(&gh->auto_shift_timer_left);
   increase_timer(&gh->auto_shift_timer_right);
   increase_timer(&gh->before_shift_timer_left);

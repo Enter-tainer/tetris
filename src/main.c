@@ -196,24 +196,24 @@ int MAIN(int argc, char* args[]) {
     init_field(&f);
     while (true) {
 #ifdef RISCV
-      int64_t tim = time();
+      int64_t frame_start_timestamp = time();
 #else
-      int64_t tim = clock();
+      int64_t frame_start_timestamp = clock();
 #endif
       draw(&f);
       input_update(&key);
       if (field_update(&f, &gh, &key, &key_history, frame_count))
         break;
-      time_increase(&gh);
+      increase_all_timers(&gh);
       ++frame_count;
       // 16666us per frame
 #ifdef RISCV
-      sleep(16666 - ((int64_t)time() - tim) > 0
-                ? 16666 - ((int64_t)time() - tim)
+      sleep(16666 - ((int64_t)time() - (int64_t)frame_start_timestamp) > 0
+                ? 16666 - ((int64_t)time() - (int64_t)frame_start_timestamp)
                 : 0);
 #else
-      usleep(16666 - ((int64_t)clock() - tim) > 0
-                 ? 16666 - ((int64_t)clock() - tim)
+      usleep(16666 - ((int64_t)clock() - (int64_t)frame_start_timestamp) > 0
+                 ? 16666 - ((int64_t)clock() - (int64_t)frame_start_timestamp)
                  : 0);
 #endif
     }

@@ -20,4 +20,4 @@ void start_timer(struct GameTimer* timer);
 // reset timer
 void reset_timer(struct GameTimer* timer);
 // increase everything in GH
-void time_increase(struct GameHandling* gh);
+void increase_all_timers(struct GameHandling* gh);
