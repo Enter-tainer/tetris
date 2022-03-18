@@ -53,6 +53,8 @@ src/libdevice.h
 src/libdevice.c
 src/map.c
 src/map.h
+src/handle.c
+src/handle.h
 )
 
 target_compile_options(tetris PUBLIC -Wall -Wshadow -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
