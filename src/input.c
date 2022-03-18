@@ -124,8 +124,8 @@ int input_update(struct KeyMap* key) {
         right_flag = 1;
         continue;
       }
-      if (cur == K_RIGHT_1 && right_flag) {
-        key->up = 0;
+      if (cur == K_RIGHT_1) {
+        key->right = 0;
         ret |= 2;
         right_flag = 0;
         stop_flag  = 0;

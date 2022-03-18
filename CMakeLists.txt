@@ -25,6 +25,8 @@ src/map.h
 src/sdl_interface.c
 src/sdl_interface.h
 src/libdevice.h
+src/handle.c
+src/handle.h
 )
 
 target_include_directories(tetris
@@ -51,8 +53,12 @@ src/libdevice.h
 src/libdevice.c
 src/map.c
 src/map.h
+src/handle.c
+src/handle.h
 )
 
+target_compile_options(tetris PUBLIC -Wall -Wshadow -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
+target_link_options(tetris PUBLIC -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
 target_compile_definitions(tetris_rv PUBLIC RISCV)
 set(LINKER_SCRIPT "rv_linker.lds")
 

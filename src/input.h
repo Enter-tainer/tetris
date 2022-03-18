@@ -3,7 +3,7 @@
 
 // A couple structs that contain key/mouse button status
 // There is a "current" state and an "old" state (previous frame)
-struct KeyMap {
+struct __attribute__((__packed__)) KeyMap {
   unsigned char up;
   unsigned char down;
   unsigned char left;

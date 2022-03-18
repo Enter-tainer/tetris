@@ -18,3 +18,5 @@ void set_vram(int x, int y, uint8_t pixel);
 uint8_t keyboard_ready();
 
 uint8_t keyboard_data();
+
+void* memset(void* dest, int c, unsigned long n);
