@@ -14,6 +14,8 @@ unsigned char v_mem[MAP_SIZE];
 void graphics_flip() {
 #ifndef RISCV
   sdl_sync();
+#else
+  commit_vram();
 #endif
 }
 
