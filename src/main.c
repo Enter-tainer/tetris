@@ -3,7 +3,6 @@
 #include "handle.h"
 #include "input.h"
 #include "tetris.h"
-#include <stdlib.h>
 #ifndef RISCV
 #include <time.h>
 #include <unistd.h>
@@ -179,7 +178,6 @@ int MAIN(int argc, char* args[]) {
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
-        .lock_timer = 0,  // lock_timer
         .move_rate  = 20};
     init_gh(&gh);
 #ifdef RISCV

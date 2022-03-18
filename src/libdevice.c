@@ -1,4 +1,5 @@
 #include "libdevice.h"
+#include <stdint.h>
 #ifdef RISCV
 // top of stack
 extern unsigned __stacktop;
@@ -33,3 +34,10 @@ void set_vram(int x, int y, uint8_t pixel) {
 uint8_t keyboard_ready() { return *KBD_READY_ADDR; }
 
 uint8_t keyboard_data() { return *KBD_DATA_ADDR; }
+void* memset(void* dest, int c, unsigned long n) {
+  char* s = dest;
+  for (uint32_t i = 0; i < n; ++i) {
+    s[i] = c;
+  }
+  return dest;
+}
