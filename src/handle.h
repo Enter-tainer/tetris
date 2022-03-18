@@ -2,7 +2,7 @@
 // for soft drop, auto shift,lock delay, time recorder
 struct GameTimer {
   int frames; // frames elapsed ater start
-  char start; // whether start
+  char is_started; // whether start
 };
 
 struct GameHandling {

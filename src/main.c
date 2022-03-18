@@ -4,12 +4,13 @@
 #include "input.h"
 #include "tetris.h"
 #ifndef RISCV
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #else
 #include "libdevice.h"
 #endif
-char handle_lock(struct Field* f, struct GameHandling* gh) {
+char drop_then_lock(struct Field* f, struct GameHandling* gh) {
   while (drop_step(f))
     ;
   reset_timer(&gh->lock_timer);
@@ -38,21 +39,23 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     else
       *kh += 1;
   }
-  if (key_history->left > gh->das && !(gh->auto_shift_timer_left.start))
-    start_timer(&gh->auto_shift_timer_left),
-        reset_timer(&gh->before_shift_timer_left);
-  else if (!key_history->left)
+  if (key_history->left > gh->das && !(gh->auto_shift_timer_left.is_started)) {
+    start_timer(&gh->auto_shift_timer_left);
+    reset_timer(&gh->before_shift_timer_left);
+  } else if (!key_history->left) {
     reset_timer(&gh->auto_shift_timer_left);
-  if (key_history->right > gh->das && !(gh->auto_shift_timer_right.start))
-    start_timer(&gh->auto_shift_timer_right),
-        reset_timer(&gh->before_shift_timer_right);
-  else if (!key_history->right)
+  }
+  if (key_history->right > gh->das && !(gh->auto_shift_timer_right.is_started)) {
+    start_timer(&gh->auto_shift_timer_right);
+    reset_timer(&gh->before_shift_timer_right);
+  } else if (!key_history->right) {
     reset_timer(&gh->auto_shift_timer_right);
+  }
 
   // key down, enable soft drop
   if (key->down) {
     start_timer(&gh->soft_drop_timer);
-    if (!(gh->lock_timer.start)) {
+    if (!(gh->lock_timer.is_started)) {
       start_timer(&gh->lock_timer);
     }
   }
@@ -66,9 +69,9 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 
   // key left, check two timers
   if (key->left) {
-    if (!(gh->auto_shift_timer_left.start)) {
+    if (!(gh->auto_shift_timer_left.is_started)) {
       // start before timer or simply go left
-      if (!(gh->before_shift_timer_left.start)) {
+      if (!(gh->before_shift_timer_left.is_started)) {
         start_timer(&gh->before_shift_timer_left);
       }
       if (gh->before_shift_timer_left.frames % gh->move_rate == 0) {
@@ -79,13 +82,14 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
         move_left_step(f);
       }
     }
-    if (gh->lock_timer.start)
+    if (gh->lock_timer.is_started) {
       start_timer(&gh->lock_timer);
+    }
   }
   if (key->right) {
-    if (!(gh->auto_shift_timer_right.start)) {
+    if (!(gh->auto_shift_timer_right.is_started)) {
       // start before timer or simply go right
-      if (!(gh->before_shift_timer_right.start)) {
+      if (!(gh->before_shift_timer_right.is_started)) {
         start_timer(&gh->before_shift_timer_right);
       }
       if (gh->before_shift_timer_right.frames % gh->move_rate == 0) {
@@ -96,59 +100,65 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
         move_right_step(f);
       }
     }
-      if (gh->lock_timer.start)
-        start_timer(&gh->lock_timer);
+    if (gh->lock_timer.is_started) {
+      start_timer(&gh->lock_timer);
+    }
   }
 
   // rotate, and restart lock timer
   if (key->z) {
     key->z = 0;
     rotate_counter_clockwise(f);
-    if (gh->lock_timer.start)
+    if (gh->lock_timer.is_started) {
       start_timer(&gh->lock_timer);
+    }
   }
 
   if (key->x) {
     key->x = 0;
     rotate_clockwise(f);
-    if (gh->lock_timer.start)
+    if (gh->lock_timer.is_started) {
       start_timer(&gh->lock_timer);
+    }
   }
 
   if (key->c) {
     key->c = 0;
     hold_mino(f);
-    if (gh->lock_timer.start)
+    if (gh->lock_timer.is_started) {
       start_timer(&gh->lock_timer);
+    }
   }
   if (key->space) {
     key->space = 0;
-    if (handle_lock(f, gh))
+    if (drop_then_lock(f, gh)) {
       return 1;
+    }
   }
 
   // auto drop, or soft drop, drop after every input ok
   int current_frame_gravity = gh->gravity / (key->down ? gh->sdf : 1);
-  if (!gh->soft_drop_timer.start) {
+  if (!gh->soft_drop_timer.is_started) {
     if (frame_count % current_frame_gravity == 0) {
       // drop and check lock
-      if (!drop_step(f) && !(gh->lock_timer.start)) {
+      if (!drop_step(f) && !(gh->lock_timer.is_started)) {
         start_timer(&gh->lock_timer);
       }
     }
   } else {
     if (gh->soft_drop_timer.frames % current_frame_gravity == 0) {
       // drop and check lock
-      if (!drop_step(f) && !(gh->lock_timer.start)) {
+      if (!drop_step(f) && !(gh->lock_timer.is_started)) {
         start_timer(&gh->lock_timer);
       }
     }
   }
 
   // check lock
-  if (gh->lock_timer.start && gh->lock_timer.frames >= gh->lock_frame) {
-    if (handle_lock(f, gh))
+  if (gh->lock_timer.is_started && gh->lock_timer.frames >= gh->lock_frame) {
+    if (drop_then_lock(f, gh)) {
       return 1;
+    }
   }
   return 0;
 }
@@ -164,10 +174,8 @@ int MAIN(int argc, char* args[]) {
   graphics_init(SCREEN_W, SCREEN_H);
   while (true) {
     struct KeyMap key, key_history;
-    for (int i = 0; i < sizeof(struct KeyMap); ++i) {
-      *((unsigned char*)&key_history + i) = 0;
-      *((unsigned char*)&key + i)         = 0;
-    }
+    memset(&key, 0, sizeof(key));
+    memset(&key_history, 0, sizeof(key_history));
     int frame_count = 0;
     draw_start_view();
     wait_any_key_down(&key);

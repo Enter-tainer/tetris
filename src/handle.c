@@ -2,16 +2,16 @@
 
 void start_timer(struct GameTimer* timer) {
   timer->frames = 0;
-  timer->start  = 1;
+  timer->is_started  = 1;
 }
 
 void reset_timer(struct GameTimer* timer) {
   timer->frames = 0;
-  timer->start  = 0;
+  timer->is_started  = 0;
 }
 
 void increase_timer(struct GameTimer* timer) {
-  if (timer->start)
+  if (timer->is_started)
     ++timer->frames;
 }
 
