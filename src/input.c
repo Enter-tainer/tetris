@@ -54,7 +54,7 @@ int input_update(struct KeyMap* key) {
   }
   unsigned char stop_flag  = 0;
   unsigned char right_flag = 0;
-  int ret;
+  int ret = 0;
   while (kbd_ready()) {
     unsigned char cur = kbd_data();
     if (!stop_flag) {
