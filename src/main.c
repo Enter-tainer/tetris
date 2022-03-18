@@ -59,9 +59,6 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   // key down, enable soft drop
   if (key->down) {
     start_timer(&gh->soft_drop_timer);
-    if (!(gh->lock_timer.is_started)) {
-      start_timer(&gh->lock_timer);
-    }
   }
   // reset before timer if not holding
   if (!key->left) {
