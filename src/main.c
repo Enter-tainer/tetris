@@ -173,8 +173,6 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 int MAIN(int argc, char* args[]) {
   struct Field f;
   graphics_init(SCREEN_W, SCREEN_H);
-  graphics_init(SCREEN_W, SCREEN_H);
-  // initialize twice to ensure that both vram is initialized
   while (true) {
     struct KeyMap key, key_history;
     memset(&key, 0, sizeof(key));
