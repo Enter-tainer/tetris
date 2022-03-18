@@ -30,7 +30,7 @@ void set_led(uint32_t val) { *LED_ADDR = val; }
 void set_vram(int x, int y, uint8_t pixel) {
   VRAM_ADDR[x * VRAM_Y + y] = pixel;
 }
-
+void commit_vram() { *VRAM_COMMIT_ADDR = 1; }
 uint8_t keyboard_ready() { return *KBD_READY_ADDR; }
 
 uint8_t keyboard_data() { return *KBD_DATA_ADDR; }

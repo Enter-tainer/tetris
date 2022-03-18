@@ -168,7 +168,7 @@ void draw(struct Field* f) {
   draw_field(f);
   draw_hold(f);
   draw_preview(f);
-  graphics_flip(f);
+  graphics_flip();
 }
 
 void draw_start_view() {
