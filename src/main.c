@@ -215,15 +215,15 @@ int MAIN(int argc, char* args[]) {
     draw_start_view();
     wait_any_key_down(&key);
     struct GameHandling gh = {
-        .das = 10, // after 'das' frames holding, auto shift start
-        .arr = 1,  // when auto shift starts, mino will move 1 block every 'arr'
+        .das = 8, // after 'das' frames holding, auto shift start
+        .arr = 2,  // when auto shift starts, mino will move 1 block every 'arr'
                    // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
         .move_rate  = 20,
         .block_op_frame =
-            3, // block rotate, hold, space in 3 frames to avoid misdrop
+            10, // block rotate, hold, space in 3 frames to avoid misdrop
     };
     init_gh(&gh);
 #ifdef RISCV
