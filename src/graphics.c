@@ -34,6 +34,14 @@ void graphics_init(int x, int y) {
     }
   }
   graphics_flip();
+#ifdef RISCV
+  for (int i = 0; i < VRAM_Y; i++) {
+    for (int j = 0; j < VRAM_X; j++) {
+      set_vram(j, i, Block_BG_DARK);
+    }
+  }
+  graphics_flip();
+#endif
 }
 
 void graphics_draw_rect(int x, int y, int w, int h, unsigned char block_type) {
@@ -41,7 +49,7 @@ void graphics_draw_rect(int x, int y, int w, int h, unsigned char block_type) {
 #ifdef RISCV
     set_vram(y, x + i, Block_BG_T);
 #else
-    map[idx(x + i, y)] = Block_BG_T;
+    map[idx(x + i, y)]         = Block_BG_T;
 #endif
   }
 
@@ -57,7 +65,7 @@ void graphics_draw_rect(int x, int y, int w, int h, unsigned char block_type) {
 #ifdef RISCV
     set_vram(y + i, x, Block_BG_L);
 #else
-    map[idx(x, y + i)] = Block_BG_L;
+    map[idx(x, y + i)]         = Block_BG_L;
 #endif
   }
 
