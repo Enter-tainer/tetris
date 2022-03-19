@@ -23,3 +23,4 @@ uint8_t keyboard_ready();
 uint8_t keyboard_data();
 
 void* memset(void* dest, int c, unsigned long n);
+void* memcpy(void* dest, const void* src, unsigned long n);
