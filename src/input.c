@@ -214,11 +214,10 @@ int input_update(struct KeyMap* key) {
 
 void wait_any_key_down(struct KeyMap* key) {
   while (1) {
-    input_update(key);
-    unsigned char* p = (unsigned char*)key;
-    for (int i = 0; i < sizeof(struct KeyMap); i++) {
-      p[i] = 0;
+    int res = input_update(key);
+    memset(key, 0, sizeof(struct KeyMap));
+    if ((res & 1) == 1) {
+      return;
     }
-    return;
   }
 }
