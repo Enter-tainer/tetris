@@ -18,7 +18,7 @@ struct __attribute__((__packed__)) KeyMap {
 };
 
 // Update key status.. No blocking.
-// If not get any key code, return -1.
+// If not get any key code, return 0.
 // if get any key down, (return_value & 1) == 1.
 // if get any key up, (return_value & 2) == 1.
 int input_update();
