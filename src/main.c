@@ -10,7 +10,7 @@
 #else
 #include "libdevice.h"
 #endif
-char drop_then_lock(struct Field* f, struct GameHandling* gh) {
+char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key) {
   while (drop_step(f))
     ;
   stop_timer(&gh->lock_timer);
@@ -18,6 +18,8 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh) {
   stop_timer(&gh->auto_shift_timer_right);
   stop_timer(&gh->before_shift_timer_left);
   stop_timer(&gh->before_shift_timer_right);
+  key->left  = 0;
+  key->right = 0;
   lock_mino(f);
   struct OptionMinoType tmp = {.is_some = false};
   bool res = spawn_mino(f, tmp); // test failure here to indicate game over
@@ -80,7 +82,12 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     } else {
       if (gh->auto_shift_timer_left.frames % gh->arr == 0) {
-        move_left_step(f);
+        bool res = move_left_step(f);
+        if (!res) {
+          stop_timer(&gh->auto_shift_timer_left);
+          stop_timer(&gh->before_shift_timer_left);
+          key->left  = 0;
+        }
       }
     }
     if (gh->lock_timer.is_started) {
@@ -98,7 +105,12 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     } else {
       if (gh->auto_shift_timer_right.frames % gh->arr == 0) {
-        move_right_step(f);
+        bool res = move_right_step(f);
+        if (!res) {
+          stop_timer(&gh->auto_shift_timer_right);
+          stop_timer(&gh->before_shift_timer_right);
+          key->right = 0;
+        }
       }
     }
     if (gh->lock_timer.is_started) {
@@ -126,14 +138,17 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   if (key->c) {
     key->c = 0;
     hold_mino(f);
-    if (gh->lock_timer.is_started) {
-      restart_timer(&gh->lock_timer);
-    }
+    stop_timer(&gh->lock_timer);
+    stop_timer(&gh->auto_shift_timer_left);
+    stop_timer(&gh->auto_shift_timer_right);
+    stop_timer(&gh->before_shift_timer_left);
+    stop_timer(&gh->before_shift_timer_right);
+    key->left  = 0;
+    key->right = 0;
   }
   if (key->space) {
     key->space = 0;
-    restart_timer(&gh->before_shift_timer_left);
-    if (drop_then_lock(f, gh)) {
+    if (drop_then_lock(f, gh, key)) {
       return 1;
     }
   }
@@ -162,7 +177,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 
   // check lock
   if (gh->lock_timer.is_started && gh->lock_timer.frames >= gh->lock_frame) {
-    if (drop_then_lock(f, gh)) {
+    if (drop_then_lock(f, gh, key)) {
       return 1;
     }
   }
@@ -187,7 +202,7 @@ int MAIN(int argc, char* args[]) {
     wait_any_key_down(&key);
     struct GameHandling gh = {
         .das = 10, // after 'das' frames holding, auto shift start
-        .arr = 5,  // when auto shift starts, mino will move 1 block every 'arr'
+        .arr = 1,  // when auto shift starts, mino will move 1 block every 'arr'
                    // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
