@@ -121,6 +121,8 @@ bool move_right_step(struct Field* f);
 // drop current for one step
 // return false if move failed (already on the ground)
 bool drop_step(struct Field* f);
+// return false if cannot drop 1 step
+bool check_dropable(struct Field* f);
 
 // rotate the current teramino clockwise
 // return false if rotate failed

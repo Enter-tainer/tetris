@@ -102,6 +102,13 @@ bool drop_step(struct Field* f) {
   }
   return false;
 }
+bool check_dropable(struct Field* f) {
+  struct FallingMino piece = f->current;
+  piece.x -= 1;
+  if (!is_obstructed(f, &piece))
+    return true;
+  return false;
+}
 
 bool rotate_clockwise(struct Field* f) {
   int test_cnt                    = 0;

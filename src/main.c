@@ -155,6 +155,10 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     }
   }
 
+  if (check_dropable(f)) {
+    reset_timer(&gh->lock_timer);
+  }
+
   // check lock
   if (gh->lock_timer.is_started && gh->lock_timer.frames >= gh->lock_frame) {
     if (drop_then_lock(f, gh)) {
