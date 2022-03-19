@@ -13,11 +13,11 @@
 char drop_then_lock(struct Field* f, struct GameHandling* gh) {
   while (drop_step(f))
     ;
-  reset_timer(&gh->lock_timer);
-  reset_timer(&gh->auto_shift_timer_left);
-  reset_timer(&gh->auto_shift_timer_right);
-  reset_timer(&gh->before_shift_timer_left);
-  reset_timer(&gh->before_shift_timer_right);
+  stop_timer(&gh->lock_timer);
+  stop_timer(&gh->auto_shift_timer_left);
+  stop_timer(&gh->auto_shift_timer_right);
+  stop_timer(&gh->before_shift_timer_left);
+  stop_timer(&gh->before_shift_timer_right);
   lock_mino(f);
   struct OptionMinoType tmp = {.is_some = false};
   bool res = spawn_mino(f, tmp); // test failure here to indicate game over
@@ -31,7 +31,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
                   struct KeyMap* key_history, int frame_count) {
   if (key->left && key->right)
     key->right = 0;
-  for (int i = 0; i < 11; ++i) {
+  for (int i = 0; i < sizeof(struct KeyMap); ++i) {
     unsigned char* kh = (unsigned char*)key_history + i;
     unsigned char* ky = (unsigned char*)key + i;
     if (*ky == 0)
@@ -40,32 +40,32 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       *kh += 1;
   }
   if (key_history->left > gh->das && !(gh->auto_shift_timer_left.is_started)) {
-    start_timer(&gh->auto_shift_timer_left);
-    reset_timer(&gh->before_shift_timer_left);
+    restart_timer(&gh->auto_shift_timer_left);
+    stop_timer(&gh->before_shift_timer_left);
   } else if (!key_history->left) {
-    reset_timer(&gh->auto_shift_timer_left);
+    stop_timer(&gh->auto_shift_timer_left);
   }
   if (key_history->right > gh->das && !(gh->auto_shift_timer_right.is_started)) {
-    start_timer(&gh->auto_shift_timer_right);
-    reset_timer(&gh->before_shift_timer_right);
+    restart_timer(&gh->auto_shift_timer_right);
+    stop_timer(&gh->before_shift_timer_right);
   } else if (!key_history->right) {
-    reset_timer(&gh->auto_shift_timer_right);
+    stop_timer(&gh->auto_shift_timer_right);
   }
 
   if (!key->down) {
-    reset_timer(&gh->soft_drop_timer);
+    stop_timer(&gh->soft_drop_timer);
   }
 
   // key down, enable soft drop
   if (key->down) {
-    start_timer(&gh->soft_drop_timer);
+    restart_timer(&gh->soft_drop_timer);
   }
   // reset before timer if not holding
   if (!key->left) {
-    reset_timer(&gh->before_shift_timer_left);
+    stop_timer(&gh->before_shift_timer_left);
   }
   if (!key->right) {
-    reset_timer(&gh->before_shift_timer_right);
+    stop_timer(&gh->before_shift_timer_right);
   }
 
   // key left, check two timers
@@ -73,7 +73,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     if (!(gh->auto_shift_timer_left.is_started)) {
       // start before timer or simply go left
       if (!(gh->before_shift_timer_left.is_started)) {
-        start_timer(&gh->before_shift_timer_left);
+        restart_timer(&gh->before_shift_timer_left);
       }
       if (gh->before_shift_timer_left.frames % gh->move_rate == 0) {
         move_left_step(f);
@@ -84,14 +84,14 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     }
     if (gh->lock_timer.is_started) {
-      start_timer(&gh->lock_timer);
+      restart_timer(&gh->lock_timer);
     }
   }
   if (key->right) {
     if (!(gh->auto_shift_timer_right.is_started)) {
       // start before timer or simply go right
       if (!(gh->before_shift_timer_right.is_started)) {
-        start_timer(&gh->before_shift_timer_right);
+        restart_timer(&gh->before_shift_timer_right);
       }
       if (gh->before_shift_timer_right.frames % gh->move_rate == 0) {
         move_right_step(f);
@@ -102,7 +102,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     }
     if (gh->lock_timer.is_started) {
-      start_timer(&gh->lock_timer);
+      restart_timer(&gh->lock_timer);
     }
   }
 
@@ -111,7 +111,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     key->z = 0;
     rotate_counter_clockwise(f);
     if (gh->lock_timer.is_started) {
-      start_timer(&gh->lock_timer);
+      restart_timer(&gh->lock_timer);
     }
   }
 
@@ -119,7 +119,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     key->x = 0;
     rotate_clockwise(f);
     if (gh->lock_timer.is_started) {
-      start_timer(&gh->lock_timer);
+      restart_timer(&gh->lock_timer);
     }
   }
 
@@ -127,11 +127,12 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     key->c = 0;
     hold_mino(f);
     if (gh->lock_timer.is_started) {
-      start_timer(&gh->lock_timer);
+      restart_timer(&gh->lock_timer);
     }
   }
   if (key->space) {
     key->space = 0;
+    restart_timer(&gh->before_shift_timer_left);
     if (drop_then_lock(f, gh)) {
       return 1;
     }
@@ -143,20 +144,20 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     if (frame_count % current_frame_gravity == 0) {
       // drop and check lock
       if (!drop_step(f) && !(gh->lock_timer.is_started)) {
-        start_timer(&gh->lock_timer);
+        restart_timer(&gh->lock_timer);
       }
     }
   } else {
     if (gh->soft_drop_timer.frames % current_frame_gravity == 0) {
       // drop and check lock
       if (!drop_step(f) && !(gh->lock_timer.is_started)) {
-        start_timer(&gh->lock_timer);
+        restart_timer(&gh->lock_timer);
       }
     }
   }
 
   if (check_dropable(f)) {
-    reset_timer(&gh->lock_timer);
+    stop_timer(&gh->lock_timer);
   }
 
   // check lock

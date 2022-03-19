@@ -16,8 +16,8 @@ struct GameHandling {
 void init_gh(struct GameHandling* gh);
 
 // start timer
-void start_timer(struct GameTimer* timer);
+void restart_timer(struct GameTimer* timer);
 // reset timer
-void reset_timer(struct GameTimer* timer);
+void stop_timer(struct GameTimer* timer);
 // increase everything in GH
 void increase_all_timers(struct GameHandling* gh);

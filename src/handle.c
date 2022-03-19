@@ -1,11 +1,11 @@
 #include "handle.h"
 
-void start_timer(struct GameTimer* timer) {
+void restart_timer(struct GameTimer* timer) {
   timer->frames = 0;
   timer->is_started  = 1;
 }
 
-void reset_timer(struct GameTimer* timer) {
+void stop_timer(struct GameTimer* timer) {
   timer->frames = 0;
   timer->is_started  = 0;
 }
@@ -25,10 +25,10 @@ void increase_all_timers(struct GameHandling* gh) {
 }
 
 void init_gh(struct GameHandling* gh) {
-  reset_timer(&gh->auto_shift_timer_left);
-  reset_timer(&gh->auto_shift_timer_right);
-  reset_timer(&gh->before_shift_timer_left);
-  reset_timer(&gh->before_shift_timer_right);
-  reset_timer(&gh->soft_drop_timer);
-  reset_timer(&gh->lock_timer);
+  stop_timer(&gh->auto_shift_timer_left);
+  stop_timer(&gh->auto_shift_timer_right);
+  stop_timer(&gh->before_shift_timer_left);
+  stop_timer(&gh->before_shift_timer_right);
+  stop_timer(&gh->soft_drop_timer);
+  stop_timer(&gh->lock_timer);
 }

@@ -66,8 +66,8 @@ target_compile_options(tetris_rv PUBLIC --target=riscv32-unknown-unknown -march=
 target_link_options(tetris_rv PUBLIC -T ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT} --target=riscv32-unknown-unknown -march=rv32im -ffreestanding -fno-builtin -nostdlib  -mno-relax -fno-PIE -G=0 -Os)
 add_custom_command(TARGET tetris_rv POST_BUILD
     COMMAND llvm-objcopy ./tetris_rv --dump-section .text=rom.bin --dump-section .data=ram.bin
-    COMMAND od -w4 -An --endian little -v -t x4 ./rom.bin > rom.hex
-    COMMAND od -w4 -An --endian little -v -t x4 ./ram.bin > ram.hex
+    COMMAND od -w4 -An --endian little -v -t x4 ./rom.bin > rom.mem
+    COMMAND od -w4 -An --endian little -v -t x4 ./ram.bin > ram.mem
     COMMAND llvm-objdump -S tetris_rv > tetris.asm
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating rom and ram files..."
