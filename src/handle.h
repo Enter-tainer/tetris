@@ -8,9 +8,14 @@ struct GameTimer {
 struct GameHandling {
   int das, arr, sdf, gravity;
   int lock_frame, move_rate;
+  int block_op_frame;
   struct GameTimer auto_shift_timer_left, auto_shift_timer_right,
       before_shift_timer_left, before_shift_timer_right, soft_drop_timer,
       lock_timer;
+  struct GameTimer x_debounce_timer;
+  struct GameTimer z_debounce_timer;
+  struct GameTimer c_debounce_timer;
+  struct GameTimer space_debounce_timer;
 };
 
 void init_gh(struct GameHandling* gh);

@@ -41,3 +41,12 @@ void* memset(void* dest, int c, unsigned long n) {
   }
   return dest;
 }
+
+void* memcpy(void* dest, const void* src, unsigned long n) {
+  const char* s = src;
+  char *d = dest;
+  for (unsigned long i = 0; i < n; ++i) {
+    d[i] = s[i];
+  }
+  return dest;
+}
