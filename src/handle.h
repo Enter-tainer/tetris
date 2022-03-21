@@ -1,7 +1,7 @@
 #pragma once
 // for soft drop, auto shift,lock delay, time recorder
 struct GameTimer {
-  int frames; // frames elapsed ater start
+  int frames;      // frames elapsed ater start
   char is_started; // whether start
 };
 

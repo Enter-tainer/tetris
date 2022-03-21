@@ -11,10 +11,11 @@ bool garbage_queue_full(struct GarbageQueue* t) {
 }
 void garbage_queue_push_back(struct GarbageQueue* t, struct GarbageInfo d) {
   t->data[t->back_ptr] = d;
-  t->back_ptr = (t->back_ptr + 1) % GARBAGE_QUEUE_LENGTH;
+  t->back_ptr          = (t->back_ptr + 1) % GARBAGE_QUEUE_LENGTH;
 }
 void garbage_queue_push_front(struct GarbageQueue* t, struct GarbageInfo d) {
-  t->front_ptr          = (t->front_ptr - 1 + GARBAGE_QUEUE_LENGTH) % GARBAGE_QUEUE_LENGTH;
+  t->front_ptr =
+      (t->front_ptr - 1 + GARBAGE_QUEUE_LENGTH) % GARBAGE_QUEUE_LENGTH;
   t->data[t->front_ptr] = d;
 }
 struct GarbageInfo garbage_queue_pop_back(struct GarbageQueue* t) {

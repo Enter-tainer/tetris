@@ -1,13 +1,13 @@
 #include "handle.h"
 
 void restart_timer(struct GameTimer* timer) {
-  timer->frames = 0;
-  timer->is_started  = 1;
+  timer->frames     = 0;
+  timer->is_started = 1;
 }
 
 void stop_timer(struct GameTimer* timer) {
-  timer->frames = 0;
-  timer->is_started  = 0;
+  timer->frames     = 0;
+  timer->is_started = 0;
 }
 
 void increase_timer(struct GameTimer* timer) {

@@ -1,6 +1,6 @@
 #pragma once
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 struct __attribute__((__packed__)) GarbageInfo {
   unsigned char slot_y : 4;
   unsigned char lines : 4;

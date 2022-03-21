@@ -1,6 +1,6 @@
 #pragma once
-#include "random.h"
 #include "garbage.h"
+#include "random.h"
 #include <stdbool.h>
 #include <stdint.h>
 

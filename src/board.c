@@ -27,8 +27,8 @@ void init_field(struct Field* f) {
   f->ren_cnt = 0;
   f->b2b_cnt = 0;
   init_queue(&f->next);
-  f->allow_hold = true;
-  f->last_spin_is_t_spin = false;
+  f->allow_hold             = true;
+  f->last_spin_is_t_spin    = false;
   struct OptionMinoType tmp = {.is_some = false};
   f->hold                   = tmp;
   spawn_mino(f, tmp);
