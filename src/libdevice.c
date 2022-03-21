@@ -44,9 +44,14 @@ void* memset(void* dest, int c, unsigned long n) {
 
 void* memcpy(void* dest, const void* src, unsigned long n) {
   const char* s = src;
-  char *d = dest;
+  char* d       = dest;
   for (unsigned long i = 0; i < n; ++i) {
     d[i] = s[i];
   }
   return dest;
 }
+
+uint8_t uart_recv_ready() { return *UART_RECV_READY_ADDR; }
+uint8_t uart_send_ready() { return *UART_SEND_READY_ADDR; }
+uint8_t uart_recv() { return *UART_RECV_DATA_ADDR; }
+void uart_send(uint8_t data) { *UART_SEND_DATA_ADDR = data; }
