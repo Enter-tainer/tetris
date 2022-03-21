@@ -1,5 +1,6 @@
 #pragma once
 #include "random.h"
+#include "garbage.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -157,11 +158,6 @@ static inline enum CellType to_cell_type(enum MinoType t) {
 // lock a mino, and perform line clean
 // TODO: when to judge T-spin(?)
 struct GameStatus lock_mino(struct Field* f);
-
-struct __attribute__((__packed__)) GarbageInfo {
-  unsigned char slot_y : 4;
-  unsigned char lines : 4;
-};
 
 void add_garbage_to_field(struct Field* f, struct GarbageInfo* g);
 struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g);

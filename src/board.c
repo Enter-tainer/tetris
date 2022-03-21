@@ -27,7 +27,8 @@ void init_field(struct Field* f) {
   f->ren_cnt = 0;
   f->b2b_cnt = 0;
   init_queue(&f->next);
-  f->allow_hold             = true;
+  f->allow_hold = true;
+  f->last_spin_is_t_spin = false;
   struct OptionMinoType tmp = {.is_some = false};
   f->hold                   = tmp;
   spawn_mino(f, tmp);
@@ -156,6 +157,18 @@ bool rotate_counter_clockwise(struct Field* f) {
       f->current = current_back;
     }
   }
+  if (f->current.type == TMino) {
+    struct FallingMino tmp = f->current;
+    bool cannot_move       = true;
+    tmp.x++; // up
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.x--;
+    tmp.y++;
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.y -= 2;
+    cannot_move &= is_obstructed(f, &tmp);
+    f->last_spin_is_t_spin = cannot_move;
+  }
   set_ghost_piece(f);
   // if all tests are failed, current will remain untouched
   // otherwise, current has been rotated
@@ -250,7 +263,7 @@ struct GameStatus lock_mino(struct Field* f) {
   return res;
 }
 
-void add_garbage_to_field(struct Field* f, struct GarbageInfo *g) {
+void add_garbage_to_field(struct Field* f, struct GarbageInfo* g) {
   enum CellType new_field[40][10];
   for (int i = 0; i < g->lines; ++i) {
     for (int j = 0; j < 10; ++j) {
@@ -277,8 +290,7 @@ void add_garbage_to_field(struct Field* f, struct GarbageInfo *g) {
 
 struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g) {
   uint8_t combo_garbage[] = {
-      0,
-      0,
+      0, 0,
       0, // 0, 1 combo
       1,
       1, // 2, 3 combo
@@ -293,13 +305,14 @@ struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g) {
   uint8_t combo_bonus = combo_garbage[f->ren_cnt >= 12 ? 12 : f->ren_cnt];
   uint8_t b2b_bonus   = f->b2b_cnt > 2;
   uint8_t pc_bonus    = g->is_pc ? 10 : 0;
-  uint8_t attack = 0;
+  uint8_t attack      = 0;
   if (g->is_t_spin) {
     attack = combo_bonus + b2b_bonus + pc_bonus + g->lines_cleared * 2;
   } else if (g->lines_cleared == 4) {
     attack = combo_bonus + b2b_bonus + pc_bonus + 4;
-  } else{
-    attack = combo_bonus + b2b_bonus + pc_bonus + (g->lines_cleared > 1 ? g->lines_cleared - 1 : 0);
+  } else {
+    attack = combo_bonus + b2b_bonus + pc_bonus +
+             (g->lines_cleared > 1 ? g->lines_cleared - 1 : 0);
   }
   if (attack > 15) {
     attack = 15;

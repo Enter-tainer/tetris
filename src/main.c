@@ -1,8 +1,11 @@
+#include "communicate.h"
 #include "draw.h"
+#include "garbage.h"
 #include "graphics.h"
 #include "handle.h"
 #include "input.h"
 #include "tetris.h"
+#include <stdint.h>
 #ifndef RISCV
 #include <string.h>
 #include <time.h>
@@ -11,7 +14,7 @@
 #include "libdevice.h"
 #endif
 char drop_then_lock(struct Field* f, struct GameHandling* gh,
-                    struct KeyMap* key) {
+                    struct KeyMap* key, struct GarbageQueue* recv_queue) {
   while (drop_step(f))
     ;
   stop_timer(&gh->lock_timer);
@@ -19,11 +22,32 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh,
   stop_timer(&gh->auto_shift_timer_right);
   stop_timer(&gh->before_shift_timer_left);
   stop_timer(&gh->before_shift_timer_right);
-  key->left  = 0;
-  key->right = 0;
-  key->down  = 0;
-  struct GameStatus g = lock_mino(f);
+  key->left             = 0;
+  key->right            = 0;
+  key->down             = 0;
+  struct GameStatus g   = lock_mino(f);
   struct GarbageInfo gb = calculate_garbage(f, &g);
+  if (gb.lines == 0) {
+    while (!garbage_queue_empty(recv_queue)) {
+      struct GarbageInfo tmp = garbage_queue_pop_front(recv_queue);
+      add_garbage_to_field(f, &tmp);
+    }
+  } else {
+    while (!garbage_queue_empty(recv_queue)) {
+      struct GarbageInfo tmp = garbage_queue_pop_front(recv_queue);
+      if (gb.lines >= tmp.lines) {
+        gb.lines -= tmp.lines;
+      } else {
+        tmp.lines -= gb.lines;
+        add_garbage_to_field(f, &tmp);
+        garbage_queue_push_front(recv_queue, tmp);
+        break;
+      }
+    }
+    if (garbage_queue_empty(recv_queue) && gb.lines > 0) {
+      send_data(garbage_to_byte(gb));
+    }
+  }
   // backfire, for test purpose only
   // add_garbage_to_field(f, &gb);
   struct OptionMinoType tmp = {.is_some = false};
@@ -35,7 +59,8 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh,
 }
 
 char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
-                  struct KeyMap* key_history, int frame_count) {
+                  struct KeyMap* key_history, struct GarbageQueue* recv_queue,
+                  int frame_count) {
   if (key->left && key->right)
     key->right = 0;
   for (int i = 0; i < sizeof(struct KeyMap); ++i) {
@@ -164,7 +189,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   if (key->space) {
     key->space = 0;
     if (!gh->c_debounce_timer.is_started) {
-      if (drop_then_lock(f, gh, key)) {
+      if (drop_then_lock(f, gh, key, recv_queue)) {
         return 1;
       }
       restart_timer(&gh->space_debounce_timer);
@@ -197,12 +222,22 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 
   // check lock
   if (gh->lock_timer.is_started && gh->lock_timer.frames >= gh->lock_frame) {
-    if (drop_then_lock(f, gh, key)) {
+    if (drop_then_lock(f, gh, key, recv_queue)) {
       return 1;
     }
   }
   return 0;
 }
+
+void recv_queue_update(struct GarbageQueue* q) {
+  while (recv_ready()) {
+    uint8_t res = recv_data();
+    if (!garbage_queue_full(q)) {
+      garbage_queue_push_back(q, garbage_from_byte(res));
+    }
+  }
+}
+
 #ifdef __linux__
 #define MAIN main
 #elif RISCV
@@ -212,6 +247,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 #endif
 int MAIN(int argc, char* args[]) {
   struct Field f;
+  struct GarbageQueue recv;
   graphics_init(SCREEN_W, SCREEN_H);
   while (true) {
     struct KeyMap key, key_history;
@@ -238,6 +274,7 @@ int MAIN(int argc, char* args[]) {
     srand(clock());
 #endif
     init_field(&f);
+    garbage_queue_init(&recv);
     while (true) {
 #ifdef RISCV
       int64_t frame_start_timestamp = time();
@@ -246,7 +283,8 @@ int MAIN(int argc, char* args[]) {
 #endif
       draw(&f);
       input_update(&key);
-      if (field_update(&f, &gh, &key, &key_history, frame_count))
+      recv_queue_update(&recv);
+      if (field_update(&f, &gh, &key, &key_history, &recv, frame_count))
         break;
       increase_all_timers(&gh);
       ++frame_count;
