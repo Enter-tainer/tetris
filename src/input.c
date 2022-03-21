@@ -101,7 +101,7 @@ int input_update(struct KeyMap* key) {
           key->down = 1;
         }
         if (cur == K_LEFT) {
-          key->left = 1;
+          key->left  = 1;
           key->right = 0;
         }
         if (cur == K_RIGHT) {

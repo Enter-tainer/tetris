@@ -1,5 +1,7 @@
+#include "random.h"
 #include "tetris.h"
 #include <stdbool.h>
+#include <stdint.h>
 void get_field(struct Field* f, enum CellType field[40][10]) {
   for (int i = 0; i < 40; ++i) {
     for (int j = 0; j < 10; ++j) {
@@ -22,8 +24,11 @@ void init_field(struct Field* f) {
       f->field[i][j] = Clean;
     }
   }
+  f->ren_cnt = 0;
+  f->b2b_cnt = 0;
   init_queue(&f->next);
   f->allow_hold             = true;
+  f->last_spin_is_t_spin    = false;
   struct OptionMinoType tmp = {.is_some = false};
   f->hold                   = tmp;
   spawn_mino(f, tmp);
@@ -74,6 +79,7 @@ bool is_obstructed(struct Field* f, struct FallingMino* piece) {
   return false;
 }
 bool move_left_step(struct Field* f) {
+  f->last_spin_is_t_spin   = false;
   struct FallingMino piece = f->current;
   piece.y -= 1;
   if (!is_obstructed(f, &piece)) {
@@ -84,6 +90,7 @@ bool move_left_step(struct Field* f) {
   return false;
 }
 bool move_right_step(struct Field* f) {
+  f->last_spin_is_t_spin   = false;
   struct FallingMino piece = f->current;
   piece.y += 1;
   if (!is_obstructed(f, &piece)) {
@@ -111,6 +118,7 @@ bool check_dropable(struct Field* f) {
 }
 
 bool rotate_clockwise(struct Field* f) {
+  f->last_spin_is_t_spin          = false;
   int test_cnt                    = 0;
   struct FallingMino current_back = f->current;
   for (; test_cnt < 5; ++test_cnt) {
@@ -121,11 +129,24 @@ bool rotate_clockwise(struct Field* f) {
       f->current = current_back;
     }
   }
+  if (f->current.type == TMino) {
+    struct FallingMino tmp = f->current;
+    bool cannot_move       = true;
+    tmp.x++; // up
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.x--;
+    tmp.y++;
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.y -= 2;
+    cannot_move &= is_obstructed(f, &tmp);
+    f->last_spin_is_t_spin = cannot_move;
+  }
   set_ghost_piece(f);
   return test_cnt <= 5;
 }
 
 bool rotate_counter_clockwise(struct Field* f) {
+  f->last_spin_is_t_spin          = false;
   int test_cnt                    = 0;
   struct FallingMino current_back = f->current;
   for (; test_cnt < 5; ++test_cnt) {
@@ -135,6 +156,18 @@ bool rotate_counter_clockwise(struct Field* f) {
     } else {
       f->current = current_back;
     }
+  }
+  if (f->current.type == TMino) {
+    struct FallingMino tmp = f->current;
+    bool cannot_move       = true;
+    tmp.x++; // up
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.x--;
+    tmp.y++;
+    cannot_move &= is_obstructed(f, &tmp);
+    tmp.y -= 2;
+    cannot_move &= is_obstructed(f, &tmp);
+    f->last_spin_is_t_spin = cannot_move;
   }
   set_ghost_piece(f);
   // if all tests are failed, current will remain untouched
@@ -166,6 +199,7 @@ bool spawn_mino(struct Field* f, struct OptionMinoType type) {
 }
 bool hold_mino(struct Field* f) {
   // TODO:
+  f->last_spin_is_t_spin = false;
   if (!f->allow_hold) {
     return false;
   }
@@ -178,8 +212,9 @@ bool hold_mino(struct Field* f) {
   return true;
 }
 
-int lock_mino(struct Field* f) {
+struct GameStatus lock_mino(struct Field* f) {
   int cell_x[4], cell_y[4];
+  struct GameStatus res = {0};
   get_cells(&f->current, cell_x, cell_y);
   for (int i = 0; i < 4; ++i) {
     int x = cell_x[i], y = cell_y[i];
@@ -192,7 +227,6 @@ int lock_mino(struct Field* f) {
       new_field[i][j] = Clean;
     }
   }
-  int lines_cleared = 0;
   for (int i = 0, k = 0; i < 40; ++i) {
     bool filled = true;
     for (int j = 0; j < 10; ++j) {
@@ -204,7 +238,47 @@ int lock_mino(struct Field* f) {
       }
       k++;
     } else {
-      lines_cleared++;
+      res.lines_cleared++;
+    }
+  }
+  res.is_pc = 1;
+  for (int i = 0; i < 40; ++i) {
+    for (int j = 0; j < 10; ++j) {
+      f->field[i][j] = new_field[i][j];
+      res.is_pc &= (f->field[i][j] == Clean);
+    }
+  }
+  res.is_t_spin = f->last_spin_is_t_spin;
+  f->allow_hold = true;
+  if (f->last_spin_is_t_spin || res.lines_cleared == 4) {
+    f->b2b_cnt++;
+  } else {
+    f->b2b_cnt = 0;
+  }
+  if (res.lines_cleared != 0) {
+    f->ren_cnt++;
+  } else {
+    f->ren_cnt = 0;
+  }
+  return res;
+}
+
+void add_garbage_to_field(struct Field* f, struct GarbageInfo* g) {
+  enum CellType new_field[40][10];
+  for (int i = 0; i < g->lines; ++i) {
+    for (int j = 0; j < 10; ++j) {
+      if (j == g->slot_y) {
+        new_field[i][j] = Clean;
+      } else {
+        new_field[i][j] = Garbage;
+      }
+    }
+  }
+  for (int i = 0; i < 40; ++i) {
+    for (int j = 0; j < 10; ++j) {
+      if (i + g->lines < 40) {
+        new_field[i + g->lines][j] = f->field[i][j];
+      }
     }
   }
   for (int i = 0; i < 40; ++i) {
@@ -212,6 +286,39 @@ int lock_mino(struct Field* f) {
       f->field[i][j] = new_field[i][j];
     }
   }
-  f->allow_hold = true;
-  return lines_cleared;
+}
+
+struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g) {
+  uint8_t combo_garbage[] = {
+      0, 0,
+      0, // 0, 1 combo
+      1,
+      1, // 2, 3 combo
+      2,
+      2, // 4, 5 combo
+      3,
+      3, // 6, 7 combo
+      4, 4,
+      4, // 8, 9, 10 combo
+      5, // 11+ combo
+  };
+  uint8_t combo_bonus = combo_garbage[f->ren_cnt >= 12 ? 12 : f->ren_cnt];
+  uint8_t b2b_bonus   = f->b2b_cnt > 2;
+  uint8_t pc_bonus    = g->is_pc ? 10 : 0;
+  uint8_t attack      = 0;
+  if (g->is_t_spin) {
+    attack = combo_bonus + b2b_bonus + pc_bonus + g->lines_cleared * 2;
+  } else if (g->lines_cleared == 4) {
+    attack = combo_bonus + b2b_bonus + pc_bonus + 4;
+  } else {
+    attack = combo_bonus + b2b_bonus + pc_bonus +
+             (g->lines_cleared > 1 ? g->lines_cleared - 1 : 0);
+  }
+  if (attack > 15) {
+    attack = 15;
+  }
+  struct GarbageInfo res = {0};
+  res.slot_y             = my_rand() % 10;
+  res.lines              = attack;
+  return res;
 }

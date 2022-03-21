@@ -18,8 +18,6 @@ src/input.c
 src/input.h
 src/board.c
 src/falling_mino.c
-src/libdevice.h
-src/libdevice.c
 src/map.c
 src/map.h
 src/sdl_interface.c
@@ -27,6 +25,10 @@ src/sdl_interface.h
 src/libdevice.h
 src/handle.c
 src/handle.h
+src/garbage.c
+src/garbage.h
+src/communicate.h
+src/communicate.c
 )
 
 target_include_directories(tetris
@@ -55,6 +57,9 @@ src/map.c
 src/map.h
 src/handle.c
 src/handle.h
+src/garbage.c
+src/garbage.h
+src/communicate.h
 )
 
 target_compile_options(tetris PUBLIC -Wall -Wshadow -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
