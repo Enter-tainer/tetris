@@ -265,7 +265,7 @@ int MAIN(int argc, char* args[]) {
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
         .move_rate  = 20,
         .block_op_frame =
-            10, // block rotate, hold, space in 3 frames to avoid misdrop
+            3, // block rotate, hold, space in 3 frames to avoid misdrop
     };
     init_gh(&gh);
 #ifdef RISCV
