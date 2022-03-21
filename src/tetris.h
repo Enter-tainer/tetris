@@ -1,6 +1,7 @@
 #pragma once
 #include "random.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 enum __attribute__((__packed__)) MinoType {
   IMino,
@@ -73,6 +74,12 @@ void rotate_falling_mino_clockwise(struct FallingMino* current, int test_cnt);
 void rotate_falling_mino_counter_clockwise(struct FallingMino* current,
                                            int test_cnt);
 
+struct GameStatus {
+  uint8_t is_pc;
+  uint8_t is_t_spin;
+  uint8_t lines_cleared;
+};
+
 struct Field {
   enum CellType field[40][10];
   struct FallingMino current;
@@ -80,6 +87,9 @@ struct Field {
   struct OptionMinoType hold;
   struct MinoQueue next;
   bool allow_hold;
+  bool last_spin_is_t_spin;
+  uint8_t ren_cnt;
+  uint8_t b2b_cnt;
   /*  x
    *  ▲
    *  │
@@ -146,4 +156,12 @@ static inline enum CellType to_cell_type(enum MinoType t) {
 
 // lock a mino, and perform line clean
 // TODO: when to judge T-spin(?)
-int lock_mino(struct Field* f);
+struct GameStatus lock_mino(struct Field* f);
+
+struct __attribute__((__packed__)) GarbageInfo {
+  unsigned char slot_y : 4;
+  unsigned char lines : 4;
+};
+
+void add_garbage_to_field(struct Field* f, struct GarbageInfo* g);
+struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g);

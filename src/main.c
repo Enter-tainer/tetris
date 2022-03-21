@@ -22,7 +22,10 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh,
   key->left  = 0;
   key->right = 0;
   key->down  = 0;
-  lock_mino(f);
+  struct GameStatus g = lock_mino(f);
+  struct GarbageInfo gb = calculate_garbage(f, &g);
+  // backfire, for test purpose only
+  // add_garbage_to_field(f, &gb);
   struct OptionMinoType tmp = {.is_some = false};
   bool res = spawn_mino(f, tmp); // test failure here to indicate game over
   if (!res) {
