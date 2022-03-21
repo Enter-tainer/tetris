@@ -1,4 +1,5 @@
 #include "input.h"
+#include "communicate.h"
 #include "libdevice.h"
 #include <stdint.h>
 #ifndef RISCV
@@ -62,7 +63,15 @@ int input_update(struct KeyMap* key) {
     BeforeReleaseArrows,
   };
   enum AutomataStatus status = Start;
-  while (kbd_ready()) {
+  while (1) {
+    if (!kbd_ready()) {
+      if (status == Start) {
+        break;
+      } else {
+        while (!kbd_ready())
+          ;
+      }
+    }
     uint8_t cur = kbd_data();
     switch (status) {
     case Start:
@@ -212,7 +221,15 @@ int input_update(struct KeyMap* key) {
       }
       break;
     }
+    
   }
+  // uint8_t key_bin = key->down | (key->right << 1) | (key->left << 2) |
+  //                   (key->space << 3) | (key->c << 4) | (key->x << 5) |
+  //                   (key->z << 6);
+  // //  0b10000000
+  // //     zxcSlrd
+  // send_data(0xff);
+  // send_data(key_bin);
   return ret;
 }
 
