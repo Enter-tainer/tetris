@@ -13,8 +13,7 @@
 #else
 #include "libdevice.h"
 #endif
-char drop_then_lock(struct Field* f, struct GameHandling* gh,
-                    struct KeyMap* key, struct GarbageQueue* recv_queue) {
+char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key) {
   while (drop_step(f))
     ;
   stop_timer(&gh->lock_timer);
@@ -77,8 +76,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   } else if (!key_history->left) {
     stop_timer(&gh->auto_shift_timer_left);
   }
-  if (key_history->right > gh->das &&
-      !(gh->auto_shift_timer_right.is_started)) {
+  if (key_history->right > gh->das && !(gh->auto_shift_timer_right.is_started)) {
     restart_timer(&gh->auto_shift_timer_right);
     stop_timer(&gh->before_shift_timer_right);
   } else if (!key_history->right) {
@@ -117,7 +115,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
         if (!res) {
           stop_timer(&gh->auto_shift_timer_left);
           stop_timer(&gh->before_shift_timer_left);
-          key->left = 0;
+          key->left  = 0;
         }
       }
     }
@@ -152,47 +150,35 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   // rotate, and restart lock timer
   if (key->z) {
     key->z = 0;
-    if (!gh->z_debounce_timer.is_started) {
-      rotate_counter_clockwise(f);
-      restart_timer(&gh->z_debounce_timer);
-      if (gh->lock_timer.is_started) {
-        restart_timer(&gh->lock_timer);
-      }
+    rotate_counter_clockwise(f);
+    if (gh->lock_timer.is_started) {
+      restart_timer(&gh->lock_timer);
     }
   }
 
   if (key->x) {
     key->x = 0;
-    if (!gh->x_debounce_timer.is_started) {
-      rotate_clockwise(f);
-      restart_timer(&gh->x_debounce_timer);
-      if (gh->lock_timer.is_started) {
-        restart_timer(&gh->lock_timer);
-      }
+    rotate_clockwise(f);
+    if (gh->lock_timer.is_started) {
+      restart_timer(&gh->lock_timer);
     }
   }
 
   if (key->c) {
     key->c = 0;
-    if (!gh->c_debounce_timer.is_started) {
-      hold_mino(f);
-      restart_timer(&gh->c_debounce_timer);
-      stop_timer(&gh->lock_timer);
-      stop_timer(&gh->auto_shift_timer_left);
-      stop_timer(&gh->auto_shift_timer_right);
-      stop_timer(&gh->before_shift_timer_left);
-      stop_timer(&gh->before_shift_timer_right);
-      key->left  = 0;
-      key->right = 0;
-    }
+    hold_mino(f);
+    stop_timer(&gh->lock_timer);
+    stop_timer(&gh->auto_shift_timer_left);
+    stop_timer(&gh->auto_shift_timer_right);
+    stop_timer(&gh->before_shift_timer_left);
+    stop_timer(&gh->before_shift_timer_right);
+    key->left  = 0;
+    key->right = 0;
   }
   if (key->space) {
     key->space = 0;
-    if (!gh->c_debounce_timer.is_started) {
-      if (drop_then_lock(f, gh, key, recv_queue)) {
-        return 1;
-      }
-      restart_timer(&gh->space_debounce_timer);
+    if (drop_then_lock(f, gh, key)) {
+      return 1;
     }
   }
 
@@ -263,10 +249,7 @@ int MAIN(int argc, char* args[]) {
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
-        .move_rate  = 20,
-        .block_op_frame =
-            3, // block rotate, hold, space in 3 frames to avoid misdrop
-    };
+        .move_rate  = 20};
     init_gh(&gh);
 #ifdef RISCV
     srand(time());
