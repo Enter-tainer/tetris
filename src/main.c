@@ -227,7 +227,7 @@ int MAIN(int argc, char* args[]) {
     draw_start_view();
     wait_any_key_down(&key);
     struct GameHandling gh = {
-        .das = 8, // after 'das' frames holding, auto shift start
+        .das = 10, // after 'das' frames holding, auto shift start
         .arr = 2, // when auto shift starts, mino will move 1 block every 'arr'
                   // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
