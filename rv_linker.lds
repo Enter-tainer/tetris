@@ -14,21 +14,14 @@ SECTIONS
   {
     . = ALIGN(4);
     *(.text.start);
+    *(.text .text.*);
   } > rom
   .data :
   {
     . = ALIGN(4);
     *(.data .data*);
     *(.rodata .rodata*);
-  } > ram
-  .bss (NOLOAD): 
-  {
-    . = ALIGN(4);
-    _szero = .;
     *(.bss .bss.*)
-    *(COMMON)
-    . = ALIGN(4);
-    _ezero = .;
   } > ram
   .stack (NOLOAD):
   {

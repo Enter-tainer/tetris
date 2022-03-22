@@ -67,8 +67,8 @@ target_link_options(tetris PUBLIC -fno-omit-frame-pointer -fsanitize=address -fs
 target_compile_definitions(tetris_rv PUBLIC RISCV)
 set(LINKER_SCRIPT "rv_linker.lds")
 
-target_compile_options(tetris_rv PUBLIC --target=riscv32-unknown-unknown -march=rv32im -ffreestanding -fno-builtin -nostdlib  -mno-relax -fno-PIE -G=0 -Os)
-target_link_options(tetris_rv PUBLIC -T ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT} --target=riscv32-unknown-unknown -march=rv32im -ffreestanding -fno-builtin -nostdlib  -mno-relax -fno-PIE -G=0 -Os)
+target_compile_options(tetris_rv PUBLIC --target=riscv32-unknown-unknown -march=rv32im -ffreestanding -fno-builtin -nostdlib  -mno-relax -fno-PIE -G=0 -Oz -flto)
+target_link_options(tetris_rv PUBLIC -T ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT} --target=riscv32-unknown-unknown -march=rv32im -ffreestanding -fno-builtin -nostdlib  -mno-relax -fno-PIE -G=0 -Oz -flto)
 add_custom_command(TARGET tetris_rv POST_BUILD
     COMMAND llvm-objcopy ./tetris_rv --dump-section .text=rom.bin --dump-section .data=ram.bin
     COMMAND od -w4 -An --endian little -v -t x4 ./rom.bin > rom.mem
