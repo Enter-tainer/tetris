@@ -13,7 +13,7 @@
 #else
 #include "libdevice.h"
 #endif
-char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key) {
+char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key ,struct GarbageQueue* recv_queue) {
   while (drop_step(f))
     ;
   stop_timer(&gh->lock_timer);
@@ -177,7 +177,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   }
   if (key->space) {
     key->space = 0;
-    if (drop_then_lock(f, gh, key)) {
+    if (drop_then_lock(f, gh, key, recv_queue)) {
       return 1;
     }
   }
