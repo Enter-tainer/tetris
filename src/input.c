@@ -110,12 +110,10 @@ int input_update(struct KeyMap* key) {
           key->down = 1;
         }
         if (cur == K_LEFT) {
-          key->left  = 1;
-          key->right = 0;
+          key->left = 1;
         }
         if (cur == K_RIGHT) {
           key->right = 1;
-          key->left  = 0;
         }
         status = Start;
         break;
@@ -180,12 +178,10 @@ int input_update(struct KeyMap* key) {
           key->down = 1;
         }
         if (cur == K_LEFT) {
-          key->left  = 1;
-          key->right = 0;
+          key->left = 1;
         }
         if (cur == K_RIGHT) {
           key->right = 1;
-          key->left  = 0;
         }
         status = Start;
         break;
