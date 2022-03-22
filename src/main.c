@@ -13,7 +13,8 @@
 #else
 #include "libdevice.h"
 #endif
-char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key ,struct GarbageQueue* recv_queue) {
+char drop_then_lock(struct Field* f, struct GameHandling* gh,
+                    struct GarbageQueue* recv_queue) {
   while (drop_step(f))
     ;
   stop_timer(&gh->lock_timer);
@@ -21,8 +22,6 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key
   stop_timer(&gh->auto_shift_timer_right);
   stop_timer(&gh->before_shift_timer_left);
   stop_timer(&gh->before_shift_timer_right);
-  key->left             = 0;
-  key->right            = 0;
   struct GameStatus g   = lock_mino(f);
   struct GarbageInfo gb = calculate_garbage(f, &g);
   if (gb.lines == 0) {
@@ -76,7 +75,8 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   } else if (!key_history->left) {
     stop_timer(&gh->auto_shift_timer_left);
   }
-  if (key_history->right > gh->das && !(gh->auto_shift_timer_right.is_started)) {
+  if (key_history->right > gh->das &&
+      !(gh->auto_shift_timer_right.is_started)) {
     restart_timer(&gh->auto_shift_timer_right);
     stop_timer(&gh->before_shift_timer_right);
   } else if (!key_history->right) {
@@ -111,12 +111,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     } else {
       if (gh->auto_shift_timer_left.frames % gh->arr == 0) {
-        bool res = move_left_step(f);
-        if (!res) {
-          stop_timer(&gh->auto_shift_timer_left);
-          stop_timer(&gh->before_shift_timer_left);
-          key->left  = 0;
-        }
+        move_left_step(f);
       }
     }
     if (gh->lock_timer.is_started) {
@@ -134,12 +129,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
       }
     } else {
       if (gh->auto_shift_timer_right.frames % gh->arr == 0) {
-        bool res = move_right_step(f);
-        if (!res) {
-          stop_timer(&gh->auto_shift_timer_right);
-          stop_timer(&gh->before_shift_timer_right);
-          key->right = 0;
-        }
+        move_right_step(f);
       }
     }
     if (gh->lock_timer.is_started) {
@@ -167,17 +157,13 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
   if (key->c) {
     key->c = 0;
     hold_mino(f);
-    stop_timer(&gh->lock_timer);
-    stop_timer(&gh->auto_shift_timer_left);
-    stop_timer(&gh->auto_shift_timer_right);
-    stop_timer(&gh->before_shift_timer_left);
-    stop_timer(&gh->before_shift_timer_right);
-    key->left  = 0;
-    key->right = 0;
+    if (gh->lock_timer.is_started) {
+      restart_timer(&gh->lock_timer);
+    }
   }
   if (key->space) {
     key->space = 0;
-    if (drop_then_lock(f, gh, key, recv_queue)) {
+    if (drop_then_lock(f, gh, recv_queue)) {
       return 1;
     }
   }
@@ -206,7 +192,7 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
 
   // check lock
   if (gh->lock_timer.is_started && gh->lock_timer.frames >= gh->lock_frame) {
-    if (drop_then_lock(f, gh, key, recv_queue)) {
+    if (drop_then_lock(f, gh, recv_queue)) {
       return 1;
     }
   }
@@ -242,8 +228,8 @@ int MAIN(int argc, char* args[]) {
     wait_any_key_down(&key);
     struct GameHandling gh = {
         .das = 8, // after 'das' frames holding, auto shift start
-        .arr = 2,  // when auto shift starts, mino will move 1 block every 'arr'
-                   // frames
+        .arr = 2, // when auto shift starts, mino will move 1 block every 'arr'
+                  // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
