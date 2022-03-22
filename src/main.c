@@ -23,7 +23,6 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key
   stop_timer(&gh->before_shift_timer_right);
   key->left             = 0;
   key->right            = 0;
-  key->down             = 0;
   struct GameStatus g   = lock_mino(f);
   struct GarbageInfo gb = calculate_garbage(f, &g);
   if (gb.lines == 0) {
@@ -49,6 +48,7 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh, struct KeyMap* key
   }
   // backfire, for test purpose only
   // add_garbage_to_field(f, &gb);
+  lock_mino(f);
   struct OptionMinoType tmp = {.is_some = false};
   bool res = spawn_mino(f, tmp); // test failure here to indicate game over
   if (!res) {
@@ -188,7 +188,6 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     if (frame_count % current_frame_gravity == 0) {
       // drop and check lock
       if (!drop_step(f) && !(gh->lock_timer.is_started)) {
-        key->down = 0;
         restart_timer(&gh->lock_timer);
       }
     }
@@ -196,7 +195,6 @@ char field_update(struct Field* f, struct GameHandling* gh, struct KeyMap* key,
     if (gh->soft_drop_timer.frames % current_frame_gravity == 0) {
       // drop and check lock
       if (!drop_step(f) && !(gh->lock_timer.is_started)) {
-        key->down = 0;
         restart_timer(&gh->lock_timer);
       }
     }
@@ -244,8 +242,8 @@ int MAIN(int argc, char* args[]) {
     wait_any_key_down(&key);
     struct GameHandling gh = {
         .das = 8, // after 'das' frames holding, auto shift start
-        .arr = 2, // when auto shift starts, mino will move 1 block every 'arr'
-                  // frames
+        .arr = 2,  // when auto shift starts, mino will move 1 block every 'arr'
+                   // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
