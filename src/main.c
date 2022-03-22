@@ -47,7 +47,6 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh,
   }
   // backfire, for test purpose only
   // add_garbage_to_field(f, &gb);
-  lock_mino(f);
   struct OptionMinoType tmp = {.is_some = false};
   bool res = spawn_mino(f, tmp); // test failure here to indicate game over
   if (!res) {
