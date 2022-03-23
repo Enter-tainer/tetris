@@ -1,4 +1,5 @@
 #pragma once
+#include "block.h"
 #include "tetris.h"
 
 // Size of the stage
@@ -31,3 +32,4 @@
 void draw(struct Field* f);
 void draw_start_view();
 void draw_end_view();
+void draw_number(int x, int y, uint8_t num, enum BlockType b);
