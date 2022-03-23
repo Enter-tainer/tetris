@@ -331,6 +331,7 @@ void draw_apm(uint32_t apm) {
       draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, 0, Block_SD);
     }
   }
+}
 void draw_garbage_indicator(uint32_t garbage_cnt) {
   graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
                      (STAGE_TOP_MARGIN)*BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
