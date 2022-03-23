@@ -165,10 +165,11 @@ void draw_preview(struct Field* f) {
   }
 }
 
-void draw(struct Field* f, uint32_t apm) {
+void draw(struct Field* f, uint32_t garbage_cnt, uint32_t apm) {
   draw_field(f);
   draw_hold(f);
   draw_preview(f);
+  draw_garbage_indicator(garbage_cnt);
   draw_apm(apm);
   graphics_flip();
 }
@@ -330,4 +331,17 @@ void draw_apm(uint32_t apm) {
       draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, 0, Block_SD);
     }
   }
+void draw_garbage_indicator(uint32_t garbage_cnt) {
+  graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN)*BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                     STAGE_H * BLOCK_SIZE, Block_BG_DARK);
+  if (garbage_cnt == 0) {
+    return;
+  }
+  if (garbage_cnt >= 22) {
+    garbage_cnt = 22;
+  }
+  graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN + STAGE_H - garbage_cnt) * BLOCK_SIZE,
+                     1 * HALF_BLOCK_SIZE, garbage_cnt * BLOCK_SIZE, Block_Z_L);
 }

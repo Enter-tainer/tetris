@@ -242,7 +242,7 @@ int MAIN(int argc, char* args[]) {
     int frame_count = 0;
     while (true) {
       int64_t frame_start_timestamp = get_time_in_us();
-      draw(&f, get_apm(&f.stat, frame_start_timestamp));
+      draw(&f, get_apm(&f.stat, frame_start_timestamp), recv.sum);
       input_update(&key);
       recv_queue_update(&recv);
       if (field_update(&f, &gh, &key, &key_history, &recv, frame_count))

@@ -33,8 +33,9 @@
 
 #define MAX_PREVIEW 5
 
-void draw(struct Field* f, uint32_t apm);
+void draw(struct Field* f, uint32_t garbage_cnt, uint32_t apm);
 void draw_start_view();
 void draw_end_view();
 void draw_number(int x, int y, uint8_t num, enum BlockType b);
 void draw_apm(uint32_t apm);
+void draw_garbage_indicator(uint32_t garbage_cnt);
