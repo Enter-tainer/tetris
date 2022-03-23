@@ -93,8 +93,8 @@ static inline void init_game_statistics(struct GameStatistics* t, int32_t now) {
 }
 static inline uint32_t get_apm(struct GameStatistics* t, int32_t now) {
   cfixed minutes =
-      cfixed_div(cfixed_from_int((now - t->game_start_time) / (1000 * 5)),
-                 cfixed_from_int(60 * 200));
+      cfixed_div(cfixed_from_int((now - t->game_start_time) / (1000 * 100)),
+                 cfixed_from_int(60 * 10));
   if (minutes == 0) {
     return 0;
   }
