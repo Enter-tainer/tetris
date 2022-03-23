@@ -22,6 +22,7 @@ static inline struct GarbageInfo garbage_from_byte(uint8_t t) {
 struct GarbageQueue {
   struct GarbageInfo data[GARBAGE_QUEUE_LENGTH];
   uint8_t back_ptr, front_ptr;
+  uint32_t sum;
   // [front_ptr, back_ptr)
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "tetris.h"
+#include <stdint.h>
 
 // Size of the stage
 #define STAGE_W 10
@@ -28,6 +29,7 @@
 
 #define MAX_PREVIEW 5
 
-void draw(struct Field* f);
+void draw(struct Field* f, uint32_t garbage_cnt);
 void draw_start_view();
 void draw_end_view();
+void draw_garbage_indicator(uint32_t garbage_cnt);

@@ -247,7 +247,7 @@ int MAIN(int argc, char* args[]) {
 #else
       int64_t frame_start_timestamp = clock();
 #endif
-      draw(&f);
+      draw(&f, recv.sum);
       input_update(&key);
       recv_queue_update(&recv);
       if (field_update(&f, &gh, &key, &key_history, &recv, frame_count))
