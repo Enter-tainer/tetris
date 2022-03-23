@@ -243,6 +243,9 @@ void draw_garbage_indicator(uint32_t garbage_cnt) {
   if (garbage_cnt == 0) {
     return;
   }
+  if (garbage_cnt >= 22) {
+    garbage_cnt = 22;
+  }
   graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
                      (STAGE_TOP_MARGIN + STAGE_H - garbage_cnt) * BLOCK_SIZE,
                      1 * HALF_BLOCK_SIZE, garbage_cnt * BLOCK_SIZE, Block_Z_L);
