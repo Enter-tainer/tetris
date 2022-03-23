@@ -18,7 +18,7 @@ void get_field(struct Field* f, enum CellType field[40][10]) {
     field[cell_x[i]][cell_y[i]] = to_cell_type(f->current.type);
   }
 }
-void init_field(struct Field* f) {
+void init_field(struct Field* f, int64_t now) {
   for (int i = 0; i < 40; ++i) {
     for (int j = 0; j < 10; ++j) {
       f->field[i][j] = Clean;
@@ -31,6 +31,7 @@ void init_field(struct Field* f) {
   f->last_spin_is_t_spin    = false;
   struct OptionMinoType tmp = {.is_some = false};
   f->hold                   = tmp;
+  init_game_statistics(&f->stat, now);
   spawn_mino(f, tmp);
 }
 void set_ghost_piece(struct Field* f) {
@@ -212,9 +213,9 @@ bool hold_mino(struct Field* f) {
   return true;
 }
 
-struct GameStatus lock_mino(struct Field* f) {
+struct LockStatus lock_mino(struct Field* f) {
   int cell_x[4], cell_y[4];
-  struct GameStatus res = {0};
+  struct LockStatus res = {0};
   get_cells(&f->current, cell_x, cell_y);
   for (int i = 0; i < 4; ++i) {
     int x = cell_x[i], y = cell_y[i];
@@ -288,7 +289,7 @@ void add_garbage_to_field(struct Field* f, struct GarbageInfo* g) {
   }
 }
 
-struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g) {
+struct GarbageInfo calculate_garbage(struct Field* f, struct LockStatus* g) {
   uint8_t combo_garbage[] = {
       0, 0,
       0, // 0, 1 combo

@@ -2,6 +2,7 @@
 #include "block.h"
 #include "graphics.h"
 #include "tetris.h"
+#include <stdint.h>
 
 void draw_block(int x, int y, unsigned char block_type) {
   graphics_fill_rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE,
@@ -164,10 +165,11 @@ void draw_preview(struct Field* f) {
   }
 }
 
-void draw(struct Field* f) {
+void draw(struct Field* f, uint32_t apm) {
   draw_field(f);
   draw_hold(f);
   draw_preview(f);
+  draw_apm(apm);
   graphics_flip();
 }
 
@@ -312,5 +314,20 @@ void draw_number(int x, int y, uint8_t num, enum BlockType b) {
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
                        1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE, Block_BG_DARK);
     break;
+  }
+}
+void draw_apm(uint32_t apm) {
+  uint8_t nums[3] = {0};
+  uint8_t total_cnt = 0;
+  for (total_cnt = 0; total_cnt < 4 && apm != 0; ++total_cnt) {
+    nums[total_cnt] = apm % 10;
+    apm /= 10;
+  }
+  for (int i = 0; i < 3; ++i) {
+    if (i < total_cnt) {
+      draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, nums[i], Block_SD);
+    } else {
+      draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, 0, Block_SD);
+    }
   }
 }

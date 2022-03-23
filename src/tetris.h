@@ -1,4 +1,5 @@
 #pragma once
+#include "fixednum.h"
 #include "garbage.h"
 #include "random.h"
 #include <stdbool.h>
@@ -75,11 +76,31 @@ void rotate_falling_mino_clockwise(struct FallingMino* current, int test_cnt);
 void rotate_falling_mino_counter_clockwise(struct FallingMino* current,
                                            int test_cnt);
 
-struct GameStatus {
+struct LockStatus {
   uint8_t is_pc;
   uint8_t is_t_spin;
   uint8_t lines_cleared;
 };
+
+struct GameStatistics {
+  uint32_t game_start_time; // in us
+  uint32_t total_attack;
+};
+
+static inline void init_game_statistics(struct GameStatistics* t, int32_t now) {
+  t->game_start_time = now;
+  t->total_attack    = 0;
+}
+static inline uint32_t get_apm(struct GameStatistics* t, int32_t now) {
+  cfixed minutes =
+      cfixed_div(cfixed_from_int((now - t->game_start_time) / (1000 * 5)),
+                 cfixed_from_int(60 * 200));
+  if (minutes == 0) {
+    return 0;
+  }
+  cfixed apm = cfixed_div(cfixed_from_int(t->total_attack), minutes);
+  return cfixed_to_int(apm);
+}
 
 struct Field {
   enum CellType field[40][10];
@@ -87,6 +108,7 @@ struct Field {
   struct FallingMino ghost;
   struct OptionMinoType hold;
   struct MinoQueue next;
+  struct GameStatistics stat;
   bool allow_hold;
   bool last_spin_is_t_spin;
   uint8_t ren_cnt;
@@ -111,7 +133,7 @@ struct OptionMinoType get_hold(struct Field* f);
 // get the next queue
 struct MinoQueue* get_preview(struct Field* f);
 
-void init_field(struct Field* f);
+void init_field(struct Field* f, int64_t now);
 
 // compute the ghost piece, and set it to f->ghost
 void set_ghost_piece(struct Field* f);
@@ -157,7 +179,7 @@ static inline enum CellType to_cell_type(enum MinoType t) {
 
 // lock a mino, and perform line clean
 // TODO: when to judge T-spin(?)
-struct GameStatus lock_mino(struct Field* f);
+struct LockStatus lock_mino(struct Field* f);
 
 void add_garbage_to_field(struct Field* f, struct GarbageInfo* g);
-struct GarbageInfo calculate_garbage(struct Field* f, struct GameStatus* g);
+struct GarbageInfo calculate_garbage(struct Field* f, struct LockStatus* g);

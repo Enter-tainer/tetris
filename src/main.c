@@ -5,6 +5,7 @@
 #include "handle.h"
 #include "input.h"
 #include "tetris.h"
+#include "time_interface.h"
 #include <stdint.h>
 #ifndef RISCV
 #include <string.h>
@@ -22,8 +23,9 @@ char drop_then_lock(struct Field* f, struct GameHandling* gh,
   stop_timer(&gh->auto_shift_timer_right);
   stop_timer(&gh->before_shift_timer_left);
   stop_timer(&gh->before_shift_timer_right);
-  struct GameStatus g   = lock_mino(f);
+  struct LockStatus g   = lock_mino(f);
   struct GarbageInfo gb = calculate_garbage(f, &g);
+  f->stat.total_attack += gb.lines;
   if (gb.lines == 0) {
     while (!garbage_queue_empty(recv_queue)) {
       struct GarbageInfo tmp = garbage_queue_pop_front(recv_queue);
@@ -222,48 +224,38 @@ int MAIN(int argc, char* args[]) {
     struct KeyMap key, key_history;
     memset(&key, 0, sizeof(key));
     memset(&key_history, 0, sizeof(key_history));
-    int frame_count = 0;
     draw_start_view();
     wait_any_key_down(&key);
     struct GameHandling gh = {
         .das = 10, // after 'das' frames holding, auto shift start
-        .arr = 2, // when auto shift starts, mino will move 1 block every 'arr'
-                  // frames
+        .arr = 2,  // when auto shift starts, mino will move 1 block every 'arr'
+                   // frames
         .sdf        = 2,  // when holding 'down' key, 'gravity'/='sdf'
         .gravity    = 60, // mino drop 1 block every 'gravity' frames
         .lock_frame = 30, // after 'lock_frame' frames, mino will lock
         .move_rate  = 20};
     init_gh(&gh);
-#ifdef RISCV
-    srand(time());
-#else
-    srand(clock());
-#endif
-    init_field(&f);
+    int64_t game_start_time = get_time_in_us();
+    srand(game_start_time);
+    init_field(&f, game_start_time);
     garbage_queue_init(&recv);
+    int frame_count = 0;
     while (true) {
-#ifdef RISCV
-      int64_t frame_start_timestamp = time();
-#else
-      int64_t frame_start_timestamp = clock();
-#endif
-      draw(&f);
+      int64_t frame_start_timestamp = get_time_in_us();
+      draw(&f, get_apm(&f.stat, frame_start_timestamp));
       input_update(&key);
       recv_queue_update(&recv);
       if (field_update(&f, &gh, &key, &key_history, &recv, frame_count))
         break;
       increase_all_timers(&gh);
       ++frame_count;
+      int64_t frame_end_timestamp = get_time_in_us();
+      int64_t frame_time          = frame_end_timestamp - frame_start_timestamp;
       // 16666us per frame
-#ifdef RISCV
-      sleep(16666 - ((int64_t)time() - (int64_t)frame_start_timestamp) > 0
-                ? 16666 - ((int64_t)time() - (int64_t)frame_start_timestamp)
-                : 0);
-#else
-      usleep(16666 - ((int64_t)clock() - (int64_t)frame_start_timestamp) > 0
-                 ? 16666 - ((int64_t)clock() - (int64_t)frame_start_timestamp)
-                 : 0);
-#endif
+      int64_t sleep_time = 16666 - frame_time;
+      if (sleep_time > 0) {
+        my_sleep(sleep_time);
+      }
     }
     draw_end_view();
     wait_any_key_down(&key);
