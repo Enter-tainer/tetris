@@ -25,7 +25,7 @@
 #define PREVIEW_HEIGHT 13
 
 #define APM_LEFT_MARGIN 20
-#define APM_TOP_MARGIN 48
+#define APM_TOP_MARGIN 47
 
 #define SCREEN_W                                                               \
   ((STAGE_LEFT_MARGIN + STAGE_W + STAGE_RIGHT_MARGIN) * BLOCK_SIZE)
