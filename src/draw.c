@@ -237,13 +237,13 @@ void draw_end_view() {
 }
 
 void draw_garbage_indicator(uint32_t garbage_cnt) {
-  graphics_fill_rect((STAGE_LEFT_MARGIN - 2) * BLOCK_SIZE,
-                     (STAGE_TOP_MARGIN)*BLOCK_SIZE, 1 * BLOCK_SIZE,
+  graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
+                     (STAGE_TOP_MARGIN)*BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
                      STAGE_H * BLOCK_SIZE, Block_BG_DARK);
   if (garbage_cnt == 0) {
     return;
   }
-  graphics_fill_rect((STAGE_LEFT_MARGIN - 2) * BLOCK_SIZE,
+  graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
                      (STAGE_TOP_MARGIN + STAGE_H - garbage_cnt) * BLOCK_SIZE,
-                     1 * BLOCK_SIZE, garbage_cnt * BLOCK_SIZE, Block_Z_L);
+                     1 * HALF_BLOCK_SIZE, garbage_cnt * BLOCK_SIZE, Block_Z_L);
 }
