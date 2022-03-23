@@ -60,6 +60,7 @@ src/handle.h
 src/garbage.c
 src/garbage.h
 src/communicate.h
+src/arith64.c
 )
 
 target_compile_options(tetris PUBLIC -Wall -Wshadow -fno-omit-frame-pointer -fsanitize=address -fsanitize=undefined)
