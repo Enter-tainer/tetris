@@ -245,80 +245,105 @@ void draw_number(int x, int y, uint8_t num, enum BlockType b) {
   switch (num) {
   case 0:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 1:
-    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE,
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 2) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 2) * HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 4 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 4 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 2:
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 3:
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 4:
-    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
-    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE,
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
+    graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y)*HALF_BLOCK_SIZE,
+                       1 * HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 2) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 4) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 5:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 6:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 7:
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 2) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 2 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 2) * HALF_BLOCK_SIZE, (y + 2) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 4) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 8:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   case 9:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     graphics_fill_rect((x)*HALF_BLOCK_SIZE, (y + 3) * HALF_BLOCK_SIZE,
-                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       2 * HALF_BLOCK_SIZE, 1 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   default:
     graphics_fill_rect((x + 1) * HALF_BLOCK_SIZE, (y + 1) * HALF_BLOCK_SIZE,
-                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE, BlockBackgroundDark);
+                       1 * HALF_BLOCK_SIZE, 3 * HALF_BLOCK_SIZE,
+                       BlockBackgroundDark);
     break;
   }
 }
 void draw_apm(uint32_t apm) {
-  uint8_t nums[3] = {0};
+  uint8_t nums[3]   = {0};
   uint8_t total_cnt = 0;
   for (total_cnt = 0; total_cnt < 4 && apm != 0; ++total_cnt) {
     nums[total_cnt] = apm % 10;
@@ -326,7 +351,8 @@ void draw_apm(uint32_t apm) {
   }
   for (int i = 0; i < 3; ++i) {
     if (i < total_cnt) {
-      draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, nums[i], BlockShadow);
+      draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, nums[i],
+                  BlockShadow);
     } else {
       draw_number(APM_LEFT_MARGIN - i * 4, APM_TOP_MARGIN, 0, BlockShadow);
     }
@@ -344,5 +370,6 @@ void draw_garbage_indicator(uint32_t garbage_cnt) {
   }
   graphics_fill_rect((STAGE_LEFT_MARGIN - 1) * BLOCK_SIZE,
                      (STAGE_TOP_MARGIN + STAGE_H - garbage_cnt) * BLOCK_SIZE,
-                     1 * HALF_BLOCK_SIZE, garbage_cnt * BLOCK_SIZE, BlockZLight);
+                     1 * HALF_BLOCK_SIZE, garbage_cnt * BLOCK_SIZE,
+                     BlockZLight);
 }

@@ -3,9 +3,9 @@
 #ifdef RISCV
 #include "libdevice.h"
 #else
+#include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
-#include <sys/time.h>
 #endif
 
 inline static uint64_t get_time_in_us() {

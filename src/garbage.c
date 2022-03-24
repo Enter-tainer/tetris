@@ -3,7 +3,7 @@
 
 void garbage_queue_init(struct GarbageQueue* t) {
   t->back_ptr = t->front_ptr = 0;
-  t->sum = 0;
+  t->sum                     = 0;
 }
 bool garbage_queue_empty(struct GarbageQueue* t) {
   return t->back_ptr == t->front_ptr;
