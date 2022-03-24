@@ -14,67 +14,67 @@ SDL_Renderer* renderer;
 
 int get_color(int c) {
   switch (c) {
-  case Block_I:
+  case BlockI:
     return COLOR_CYAN;
-  case Block_T:
+  case BlockT:
     return COLOR_PURPLE;
-  case Block_O:
+  case BlockO:
     return COLOR_YELLOW;
-  case Block_J:
+  case BlockJ:
     return COLOR_BLUE;
-  case Block_L:
+  case BlockL:
     return COLOR_ORANGE;
-  case Block_S:
+  case BlockS:
     return COLOR_GREEN;
-  case Block_Z:
+  case BlockZ:
     return COLOR_RED;
-  case Block_I_L:
+  case BlockILight:
     return COLOR_CYAN_LIGHT;
-  case Block_T_L:
+  case BlockTLight:
     return COLOR_PURPLE_LIGHT;
-  case Block_O_L:
+  case BlockOLight:
     return COLOR_YELLOW_LIGHT;
-  case Block_J_L:
+  case BlockJLight:
     return COLOR_BLUE_LIGHT;
-  case Block_L_L:
+  case BlockLLight:
     return COLOR_ORANGE_LIGHT;
-  case Block_S_L:
+  case BlockSLight:
     return COLOR_GREEN_LIGHT;
-  case Block_Z_L:
+  case BlockZLight:
     return COLOR_RED_LIGHT;
-  case Block_I_Top:
+  case BlockITop:
     return COLOR_CYAN_LIGHT;
-  case Block_T_Top:
+  case BlockTTop:
     return COLOR_PURPLE_LIGHT;
-  case Block_O_Top:
+  case BlockOTop:
     return COLOR_YELLOW_LIGHT;
-  case Block_J_Top:
+  case BlockJTop:
     return COLOR_BLUE_LIGHT;
-  case Block_L_Top:
+  case BlockLTop:
     return COLOR_ORANGE_LIGHT;
-  case Block_S_Top:
+  case BlockSTop:
     return COLOR_GREEN_LIGHT;
-  case Block_Z_Top:
+  case BlockZTop:
     return COLOR_RED_LIGHT;
-  case Block_BG:
+  case BlockBackground:
     return COLOR_BACKGROUND;
-  case Block_BG_DARK:
+  case BlockBackgroundDark:
     return COLOR_BACKGROUND_DARK;
-  case Block_SD:
+  case BlockShadow:
     return COLOR_SHADOW;
   }
   return -1;
 }
 
-int get_block_type(enum BlockType b) {
-  if (b >= Block_I && b <= Block_Z) {
-    return Block_Block;
+enum BlockPrototype get_block_type(enum BlockType b) {
+  if (b >= BlockI && b <= BlockZ) {
+    return BlockBlock;
   }
-  if (b >= Block_I_L && b <= Block_Z_L) {
-    return Block_Block_Light;
+  if (b >= BlockILight && b <= BlockZLight) {
+    return BlockBlockLight;
   }
-  if (b >= Block_I_Top && b <= Block_Z_Top) {
-    return Block_Block_Top;
+  if (b >= BlockITop && b <= BlockZTop) {
+    return BlockBlockTop;
   }
 }
 
@@ -112,7 +112,7 @@ void sdl_sync() {
       if (c == COLOR_UNKNOW)
         continue;
       sdl_set_color(c);
-      if (t == Block_Block_Top) {
+      if (t == BlockBlockTop) {
         sdl_fill_rect(i * BLOCK_SIZE, j * BLOCK_SIZE + (BLOCK_SIZE >> 1),
                       BLOCK_SIZE, (BLOCK_SIZE >> 1));
         sdl_set_color(COLOR_BACKGROUND);

@@ -1,68 +1,68 @@
 #include "block.h"
 #include "tetris.h"
 
-int get_block(int c) {
+enum BlockType get_block(int c) {
   switch (c) {
   case IBlock:
-    return Block_I;
+    return BlockI;
   case TBlock:
-    return Block_T;
+    return BlockT;
   case OBlock:
-    return Block_O;
+    return BlockO;
   case JBlock:
-    return Block_J;
+    return BlockJ;
   case LBlock:
-    return Block_L;
+    return BlockL;
   case SBlock:
-    return Block_S;
+    return BlockS;
   case ZBlock:
-    return Block_Z;
+    return BlockZ;
   case Clean:
-    return Block_BG;
+    return BlockBackground;
   case Shadow:
-    return Block_SD;
+    return BlockShadow;
   case Garbage:
-    return Block_SD;
+    return BlockShadow;
   }
-  return Block_BG;
+  return BlockBackground;
 }
 
-int get_block_light(int c) {
+enum BlockType get_block_light(int c) {
   switch (c) {
   case IBlock:
-    return Block_I_L;
+    return BlockILight;
   case TBlock:
-    return Block_T_L;
+    return BlockTLight;
   case OBlock:
-    return Block_O_L;
+    return BlockOLight;
   case JBlock:
-    return Block_J_L;
+    return BlockJLight;
   case LBlock:
-    return Block_L_L;
+    return BlockLLight;
   case SBlock:
-    return Block_S_L;
+    return BlockSLight;
   case ZBlock:
-    return Block_Z_L;
+    return BlockZLight;
   }
-  return Block_BG;
+  return BlockBackground;
 }
 
-int get_block_top(int c) {
+enum BlockType get_block_top(int c) {
   switch (c) {
   case IBlock:
-    return Block_I_Top;
+    return BlockITop;
   case TBlock:
-    return Block_T_Top;
+    return BlockTTop;
   case OBlock:
-    return Block_O_Top;
+    return BlockOTop;
   case JBlock:
-    return Block_J_Top;
+    return BlockJTop;
   case LBlock:
-    return Block_L_Top;
+    return BlockLTop;
   case SBlock:
-    return Block_S_Top;
+    return BlockSTop;
   case ZBlock:
-    return Block_Z_Top;
+    return BlockZTop;
   }
-  return Block_BG;
+  return BlockBackground;
 }

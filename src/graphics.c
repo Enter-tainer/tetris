@@ -27,9 +27,9 @@ void graphics_init(int x, int y) {
   for (int i = 0; i < VRAM_Y; i++) {
     for (int j = 0; j < VRAM_X; j++) {
 #ifdef RISCV
-      set_vram(j, i, Block_BG_DARK);
+      set_vram(j, i, BlockBackgroundDark);
 #else
-      map[idx(i, j)] = Block_BG_DARK;
+      map[idx(i, j)] = BlockBackgroundDark;
 #endif
     }
   }
@@ -37,7 +37,7 @@ void graphics_init(int x, int y) {
 #ifdef RISCV
   for (int i = 0; i < VRAM_Y; i++) {
     for (int j = 0; j < VRAM_X; j++) {
-      set_vram(j, i, Block_BG_DARK);
+      set_vram(j, i, BlockBackgroundDark);
     }
   }
   graphics_flip();
@@ -47,33 +47,33 @@ void graphics_init(int x, int y) {
 void graphics_draw_rect(int x, int y, int w, int h, unsigned char block_type) {
   for (int i = 0; i < w; i++) {
 #ifdef RISCV
-    set_vram(y, x + i, Block_BG_T);
+    set_vram(y, x + i, BlockBackgroundTop);
 #else
-    map[idx(x + i, y)]         = Block_BG_T;
+    map[idx(x + i, y)]         = BlockBackgroundTop;
 #endif
   }
 
   for (int i = 0; i < w; i++) {
 #ifdef RISCV
-    set_vram(y + h - 1, x + i, Block_BG_B);
+    set_vram(y + h - 1, x + i, BlockBackgroundBottom);
 #else
-    map[idx(x + i, y + h - 1)] = Block_BG_B;
+    map[idx(x + i, y + h - 1)] = BlockBackgroundBottom;
 #endif
   }
 
   for (int i = 0; i < h; i++) {
 #ifdef RISCV
-    set_vram(y + i, x, Block_BG_L);
+    set_vram(y + i, x, BlockBackgroundLeft);
 #else
-    map[idx(x, y + i)]         = Block_BG_L;
+    map[idx(x, y + i)]         = BlockBackgroundLeft;
 #endif
   }
 
   for (int i = 0; i < h; i++) {
 #ifdef RISCV
-    set_vram(y + i, x + w - 1, Block_BG_R);
+    set_vram(y + i, x + w - 1, BlockBackgroundRight);
 #else
-    map[idx(x + w - 1, y + i)] = Block_BG_R;
+    map[idx(x + w - 1, y + i)] = BlockBackgroundRight;
 #endif
   }
 }
