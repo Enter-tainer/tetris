@@ -11,7 +11,7 @@ Modern tetris that runs on self-made RISC-V CPU and x86 machines.
 - T spin
 - Versus mode！
 
-![video](assets/output.mp4)
+https://user-images.githubusercontent.com/25521218/162770476-865898fe-13d6-405b-ad8f-f09d6bf8c8ab.mp4
 
 ## Build
 
